@@ -1,62 +1,89 @@
-# OrdeX — דמו לניהול הזמנות
+# OrdeX: Order Workflow Engine
 
-דמו עצמאי בעברית המדגים את הליבה התפעולית של OrdeX: מהזמנה חדשה ועד למסירה, עם חסמים ברורים והיסטוריית פעולות.
-נבנה לפורטפוליו באמצעות חילוץ חוקי זרימה מהפרויקט המקורי והוספת ממשק הדגמה ייעודי.
+OrdeX is an order-management system I built for a wallpaper-installation business: intake, preparation, scheduling, payment and delivery. This repository is the public slice of it. It contains the workflow rules extracted from the production codebase, their tests, and a Hebrew RTL demo you can run with fictional orders.
 
-![תצוגת הדמו עם נתונים פיקטיביים](docs/preview.png)
+![OrdeX demo: order queue and order detail with the five-step workflow](docs/preview.png)
 
-## הרצה מקומית
+**Try it:** download [`demo/index.html`](demo/index.html) and open it in a browser. It's one self-contained file with no install, network calls or accounts.
 
-נדרשים Node.js 22.12+ ו־npm. אין צורך במפתחות API, בקובץ סביבה או במסד נתונים.
+## The problem
 
-```bash
-npm ci --ignore-scripts
-npm run dev
+In an installation business, an order can *look* ready to go while something is still missing: items not yet prepared, no delivery date, or an unpaid balance. Mistakes show up at the customer's door. The goal was a workflow that **won't let an order move forward until its prerequisites are met, and says exactly what's missing**.
+
+![Blocked transition: "move to ready" is disabled until all items are prepared](docs/blocked-transition.png)
+
+## The full system (private)
+
+The production codebase stays private because it holds business logic and integrations. It's a full-stack Next.js system, which I built over 14 months.
+
+| | |
+|---|---|
+| **Scale** | 81 Prisma data models · 171 API routes · 171 test files · 1,750+ commits |
+| **Core** | Order queue with calendar, kanban, map and list views · status automation through a rules engine · RBAC · Hebrew/English with RTL |
+| **Integrations** | WooCommerce catalog sync and webhook order ingestion · WhatsApp and SMS (Twilio, Meta) · Google Calendar · Mapbox/Google Maps route planning |
+| **Background work** | BullMQ workers on Redis for reminders, callbacks and sync jobs |
+| **AI** | Gemini-based assistant for scheduling suggestions and data enrichment |
+| **Ops** | PostgreSQL, Docker, staging/production environments, health checks and OpenTelemetry monitoring · a companion iOS app |
+
+```mermaid
+flowchart LR
+    Woo[WooCommerce] -- webhooks / sync --> API
+    UI["Next.js app<br/>queue · calendar · map"] --> API["API routes<br/>RBAC · validation"]
+    API --> Rules["Workflow rules<br/>status machine + guards"]
+    API --> DB[(PostgreSQL<br/>Prisma)]
+    API --> Q[(Redis · BullMQ)]
+    Q --> Workers["Workers<br/>reminders · callbacks · sync"]
+    Workers --> Msg[WhatsApp / SMS]
+    Workers --> Cal[Google Calendar]
+    iOS[iOS app] --> API
 ```
 
-פתחו את כתובת localhost שמודפסת במסוף. בהתקנה הראשונה נדרש אינטרנט להורדת התלויות; בזמן השימוש אין חיבור לספקים חיצוניים.
+**In this repository:** the workflow rules (highlighted above) and their tests, plus a demo UI built only for this portfolio.
+
+## Engineering decisions
+
+| Decision | Why |
+|---|---|
+| **The workflow is an explicit state machine** ([`lib/status-machine.ts`](lib/status-machine.ts)) | Every allowed transition is listed in one place, so "can this order go from X to Y?" has a single, testable answer. In production the API routes and the workflow and status-recalculation services all call it. |
+| **Guards return reasons, not booleans** ([`lib/status-guards.ts`](lib/status-guards.ts), [`lib/workflow-requirements.ts`](lib/workflow-requirements.ts)) | A blocked button that doesn't say why creates support calls. Each guard returns the missing prerequisites, such as unprepared items, no delivery date or an outstanding balance, and the UI shows them. |
+| **Departure requires full payment and a date** | The most expensive mistake is a truck leaving for an unpaid or unscheduled job. The rule lives in the domain layer, not in a form. |
+| **Legacy statuses map forward** ([`domain/status/legacyStatusMap.ts`](domain/status/legacyStatusMap.ts)) | The status model was redesigned while real orders existed. Old statuses still display and resolve to their new equivalents, but nothing can create them anymore. |
+| **Rules have no framework dependencies** | In production they sit behind Prisma and Next.js. Here the same logic runs in a plain React demo and in Vitest without changes, apart from swapping the Prisma enums for TypeScript unions. |
+
+## What's in this repo
+
+| Part | Origin |
+|---|---|
+| Status machine, guards, requirement mapping, legacy map | Extracted from the production codebase. Prisma enums replaced with TypeScript types. |
+| Workflow regression tests | Adapted from the production test suite |
+| Demo UI, fictional orders, in-memory history | Built for this portfolio |
+
+[`extraction-manifest.json`](extraction-manifest.json) records the source revision and a SHA-256 hash for every extracted file.
+
+## Run it from source
+
+Requires Node.js 22.12 or later. No API keys or database.
 
 ```bash
-npm run build       # בדיקת TypeScript ובניית אתר סטטי
-npm run preview     # תצוגה מקומית של הבנייה
-npm test            # בדיקות לוגיקה
-npx playwright install chromium
-npm run e2e         # בדיקות ממשק בדפדפן
+npm ci
+npm run dev          # Vite dev server
+npm test             # 40 unit tests: transitions, guards, payment, scheduling, hold/resume
+npm run e2e          # Playwright: full flow, RTL, 390/768/1440 px, no external requests
+npm run build:demo   # rebuilds the single-file demo/index.html
 ```
 
-## מה אפשר לנסות
+**A walk through the demo:**
+1. Pick an order and move it to **בטיפול** (in progress).
+2. Try **מוכן** (ready). It's blocked until the items are marked as prepared.
+3. Try **בדרך** (out for delivery). It's blocked until a delivery date is set and payment is confirmed.
+4. Complete the order and look at its action history.
 
-1. בחרו הזמנה ולחצו על מעבר ל״בטיפול״.
-2. נסו לעבור ל״מוכן״: ההסבר מציג מה חסר. סמנו שהפריטים מוכנים והתקדמו.
-3. נסו לצאת לדרך לפני קביעת מועד וסימון תשלום מלא בדמו.
-4. קבעו תאריך, סמנו תשלום בדמו, צאו לדרך והשלימו את ההזמנה.
-5. בדקו את היסטוריית הפעולות. נסו גם השהיה עם סיבה וחזרה למצב הקודם.
-6. צרו הזמנת הדגמה, חפשו לפי לקוח או מוצר, ואפסו את הנתונים.
+## How I built it
 
-## תכולה ומגבלות
+I designed the domain model, the workflow rules and the integrations, and I own the codebase. For implementation I worked with AI coding agents (Claude Code, Google Jules, Cursor) as contributors: I wrote the specs and acceptance criteria and reviewed every change. About 1,300 of the 1,750+ commits are my own.
 
-- נתונים פיקטיביים בלבד, שנשמרים בזיכרון הדפדפן עד לרענון. אין שמירה מקומית מתמשכת.
-- היציאה למשלוח או להתקנה דורשת מועד ותשלום מלא. הכנת כל הפריטים וכתובת מלאה נדרשות לפני ״מוכן״.
-- התשלום הוא סימון לצורך הדגמה בלבד; אין סליקה, קבלה או גבייה.
-- הממשק חדש וממוקד בפורטפוליו; הוא אינו עותק של כל מסכי המערכת המקורית.
-- אין שרת, התחברות, הרשאות, הפרדת עסקים, WooCommerce, תורים, AI, מפות או משלוח הודעות. הדמו אינו מיועד לנתוני לקוחות אמיתיים.
-- כללי הזרימה כוללים מטא־דאטה היסטורי לפעולות אוטומטיות. הדמו אינו מפעיל אותן.
-- הקוד המקורי כולל סטטוסים ישנים; הם נשמרו במודולי הליבה כדי לשמור על התאימות, ואינם מוצעים ליצירה בממשק.
+## Boundaries
 
-## מקור וארכיטקטורה
+All demo data is fictional. Payment in the demo is a toggle: no charge or payment provider is involved. The demo has no backend, authentication or integrations, and isn't meant for real customer data.
 
-`lib/orderStatus.ts`, `lib/status-machine.ts`, `lib/status-guards.ts` ו־`lib/workflow-requirements.ts` חולצו מהמערכת המקורית, יחד עם מיפוי סטטוסים ובדיקות ממוקדות. תלות Prisma הוחלפה באובייקט קבוע ובטיפוס string union עם אותם ערכים.
-
-`src/demo.ts` מחבר את חוקי הליבה לפעולות הדמו, כולל שמירת המצב שלפני השהיה והיסטוריה בזיכרון. `src/main.tsx` מציג תור הזמנות ופרטי הזמנה ב־React. הבנייה באמצעות Vite מפיקה אתר סטטי.
-
-[מפת החילוץ](extraction-manifest.json) כוללת רשימת קובצי המקור, טביעות SHA-256 וקומיט הבסיס. היסטוריית Git, קובצי סביבה, נתוני מערכת, תוצרי בנייה והיסטוריית שיחות מהמקור לא הועתקו.
-
-## בדיקות ואבטחת הפרסום
-
-40 בדיקות לוגיקה מכסות מעברים מותרים וחסומים, הכנת פריטים, תשלום, תזמון, השהיה ואיפוס. בדיקות Playwright מכסות את הזרימה המלאה, יצירה וחיפוש, שיח יצירה, RTL ורוחבי 390/768/1440. בדיקת הזרימה מוודאת גם שאין בקשות לספקים חיצוניים או שגיאות JavaScript.
-
-[גבולות הבדיקה](docs/publication-review.md) מפרטים מה נבדק לפני הפרסום. ריפו ציבורי אינו אישור למוכנות המערכת המקורית לייצור.
-
-## זכויות שימוש
-
-כל הזכויות שמורות. פרסום הקוד נועד לעיון בפורטפוליו; לא הוענק רישיון קוד פתוח.
+**Rights:** all rights reserved. The source is published for portfolio review, and no open-source license is granted.

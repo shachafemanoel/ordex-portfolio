@@ -8,7 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "build:demo": "vite build && node scripts/build-demo.mjs"
   },
   "dependencies": {
     "react": "18.3.1",
