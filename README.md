@@ -6,7 +6,7 @@ OrdeX is an order-management system I built for a wallpaper-installation busines
 
 ![OrdeX demo: order queue and order detail with the five-step workflow](docs/preview.png)
 
-**Try it:** download [`demo/index.html`](demo/index.html) and open it in a browser. It's one self-contained file with no install, network calls or accounts.
+**Try it:** [open the live demo](https://shachafemanoel.github.io/ordex-portfolio/demo/), or download [`demo/index.html`](demo/index.html) and open it in a browser. It's one self-contained file with no install, network calls or accounts.
 
 ## The problem
 
