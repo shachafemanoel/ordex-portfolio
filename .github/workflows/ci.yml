@@ -1,10 +1,10 @@
 name: Continuous Integration
 
 # The MVP gate. Frozen modules keep their tests in `npm test`, which is not part of this gate.
+# Automatic triggers (push / pull_request) are paused while GitHub Actions is
+# unavailable on this account. Run manually from the Actions tab, and restore
+# the triggers once Actions is back.
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 concurrency:

@@ -1,9 +1,9 @@
 name: Secret Scan (gitleaks)
 
+# Automatic triggers (push / pull_request) are paused while GitHub Actions is
+# unavailable on this account. Run manually from the Actions tab, and restore
+# the triggers once Actions is back.
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

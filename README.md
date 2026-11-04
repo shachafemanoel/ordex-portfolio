@@ -1,5 +1,7 @@
 # OrdeX: Order Management System
 
+![license](https://img.shields.io/badge/license-MIT-blue) ![Next.js](https://img.shields.io/badge/Next.js-16-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Prisma%207-4169E1) ![iOS](https://img.shields.io/badge/iOS-SwiftUI-F05138)
+
 OrdeX is an order-management system I built for a wallpaper-installation business: intake, preparation, scheduling, payment and delivery. This repository holds the full source code: the Next.js web app, the API, the workflow engine, background workers, integrations and the companion iOS app. It also includes a Hebrew RTL demo you can open with fictional orders.
 
 ![OrdeX demo: order queue and order detail with the five-step workflow](docs/preview.png)
@@ -103,8 +105,8 @@ I designed the domain model, the workflow rules and the integrations, and I own 
 
 ## Boundaries
 
-All demo and seed data is fictional. No credentials are committed: configuration comes from environment variables (see `.env.example`), and the repository is scanned with gitleaks in CI.
+All demo and seed data is fictional. No credentials are committed: configuration comes from environment variables (see `.env.example`), and a [gitleaks workflow](.github/workflows/gitleaks.yml) scans for leaked secrets.
 
-**Rights:** all rights reserved. The source is published for portfolio review, and no open-source license is granted.
+**License:** [MIT](LICENSE). Security issues: see [SECURITY.md](SECURITY.md).
 
 The repository was published as a clean snapshot of the production codebase. The development history (1,750+ commits) stays private.

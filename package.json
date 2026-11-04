@@ -2,6 +2,7 @@
   "name": "ordex-web",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "prepare": "husky install",
     "dev": "sh -c 'lsof -t -i:3000 | xargs kill -9 2>/dev/null || true' && next dev --port 3000",
