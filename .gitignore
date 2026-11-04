@@ -1,8 +1,86 @@
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.next/
 dist/
+build/
+out/
+
 .env*
+!.env.test.example
+!.env.example
+!.env.demo.example
 *.log
-*.tsbuildinfo
+coverage/
 .DS_Store
+
+# IDE - Keep settings for team consistency
+.vscode/launch.json
+.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+
+# Testing
+.vitest/
 test-results/
 playwright-report/
+
+# OS generated files
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.temp
+
+# AI tools and local agent state
+.agent/
+.agents/
+.claude/
+.codex/
+.cursor/
+.gemini/
+.Jules/
+.jules/
+.specstory/
+.stitch_exports/
+.stitch-cache/
+.telemetry/
+.mcp.json
+.vscode/mcp.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+skills-lock.json
+scratch/
+
+# Credentials
+gha-creds-*.json
+
+# Data files
+*.csv
+orders_data.json
+
+# Temp directories
+.tmp/
+temp/
+tmp/
+
+# Dev artifacts
+my-agent/
+favicon_io*/
+
+.gemini/
+
+# Local one-time admin invitation written by scripts/dev-setup.sh
+.dev-invite.json

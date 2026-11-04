@@ -1,0 +1,74 @@
+/* Core Transitions and Micro-interactions */
+
+:root {
+  --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: var(--glow-primary);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(79, 165, 255, 0.18), 0 18px 40px -18px rgba(0, 133, 255, 0.3);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s var(--ease-out-expo) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s var(--ease-out-back) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1.8s ease-in-out infinite;
+}
+
+/* Staggered entry classes */
+.stagger-1 { animation-delay: 100ms; }
+.stagger-2 { animation-delay: 150ms; }
+.stagger-3 { animation-delay: 200ms; }
+.stagger-4 { animation-delay: 250ms; }
+
+/* Interactive Hover States */
+.hover-lift {
+  transition: transform 0.2s var(--ease-out-back), box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--app-shadow-md);
+}
+
+[dir="rtl"] .hover-lift:hover {
+  /* No directional change needed for vertical lift */
+}

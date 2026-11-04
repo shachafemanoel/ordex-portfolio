@@ -1,10 +1,28 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig } from '@playwright/test';
+import { config as loadDotenv } from 'dotenv';
+import { existsSync } from 'node:fs';
+
+const isSmokeRun = process.argv.some((arg) => arg.includes('tests/e2e/smoke.spec.ts'));
+const hasEnvTestFile = existsSync('.env.test');
+
+if (isSmokeRun) {
+  loadDotenv({ path: '.env.test' });
+}
+
+if (!process.env.DATABASE_URL && (!isSmokeRun || !hasEnvTestFile)) {
+  loadDotenv({ path: '.env' });
+}
+
 export default defineConfig({
-  testDir: "./tests/e2e",
-  use: { baseURL: "http://127.0.0.1:4176", locale: "he-IL" },
-  webServer: {
-    command: "npm run dev -- --port 4176 --strictPort",
-    url: "http://127.0.0.1:4176",
-    reuseExistingServer: false,
+  testDir: '.',
+  testMatch: ['playwright/tests/**/*.spec.ts', 'tests/e2e/**/*.spec.ts', 'tests/e2e/**/*.spec.tsx'],
+  fullyParallel: false,
+  retries: process.env.CI ? 1 : 0,
+  reporter: process.env.CI ? [['html'], ['list']] : 'list',
+  use: {
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
+    trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
   },
 });

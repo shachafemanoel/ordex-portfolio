@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "components/settings/**/*.tsx",
+    "app/(admin)/settings/page.tsx",
+    "components/receiving/*.tsx",
+    "app/(ui)/receiving/page.tsx",
+    "lib/store-settings-schema.ts"
+  ]
+}

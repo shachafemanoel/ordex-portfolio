@@ -1,0 +1,44 @@
+:root {
+  /* Spacing - Fluid clamped (responsive with viewport) */
+  --s-1: clamp(0.25rem, 1vw, 0.5rem);
+  --s-2: clamp(0.5rem, 2vw, 1rem);
+  --s-3: clamp(1rem, 4vw, 2rem);
+
+  /* Ops-specific spacing for dense list/board layouts */
+  --ops-card-pad-x: clamp(14px, 2.5vw, 20px);
+  --ops-card-pad-y: clamp(10px, 2vw, 16px);
+  --ops-row-pad:    clamp(8px, 1.5vw, 14px);
+  --ops-gap:        clamp(8px, 1.2vw, 16px);
+
+  /* Typography - Clamped */
+  --fs-title: clamp(1rem, 4vw, 1.25rem); /* Refined title size */
+  --fs-body: clamp(0.875rem, 2vw, 1rem);
+  --fs-meta: clamp(0.75rem, 1.5vw, 0.8125rem);
+
+  /* Radius - aligned with app primitives */
+  --r-1: var(--app-radius-sm);
+  --r-card: var(--app-radius-md);
+
+  /* Hit Area – WCAG 2.2 Level AAA minimum (44px), expanded on touch */
+  --hit: 44px;
+  --hit-lg: 48px;
+
+  /* Column widths for fluid multi-panel ops layouts */
+  --ops-col-narrow: clamp(200px, 18vw, 280px);
+  --ops-col-mid:    clamp(280px, 28vw, 400px);
+  --ops-col-wide:   minmax(0, 1fr);
+
+  /* Kanban column — minimum usable width */
+  --kanban-col-w: clamp(280px, 30vw, 360px);
+}
+
+/* Increase hit areas on coarse-pointer (touch) devices */
+@media (pointer: coarse) {
+  :root {
+    --hit: 48px;
+    --hit-lg: 56px;
+    /* More generous padding on touch */
+    --ops-card-pad-x: clamp(16px, 3vw, 24px);
+    --ops-row-pad:    clamp(12px, 2.5vw, 20px);
+  }
+}

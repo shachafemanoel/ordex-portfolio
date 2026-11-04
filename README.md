@@ -1,6 +1,6 @@
-# OrdeX: Order Workflow Engine
+# OrdeX: Order Management System
 
-OrdeX is an order-management system I built for a wallpaper-installation business: intake, preparation, scheduling, payment and delivery. This repository is the public slice of it. It contains the workflow rules extracted from the production codebase, their tests, and a Hebrew RTL demo you can run with fictional orders.
+OrdeX is an order-management system I built for a wallpaper-installation business: intake, preparation, scheduling, payment and delivery. This repository holds the full source code: the Next.js web app, the API, the workflow engine, background workers, integrations and the companion iOS app. It also includes a Hebrew RTL demo you can open with fictional orders.
 
 ![OrdeX demo: order queue and order detail with the five-step workflow](docs/preview.png)
 
@@ -12,9 +12,9 @@ In an installation business, an order can *look* ready to go while something is 
 
 ![Blocked transition: "move to ready" is disabled until all items are prepared](docs/blocked-transition.png)
 
-## The full system (private)
+## The system
 
-The production codebase stays private because it holds business logic and integrations. It's a full-stack Next.js system, which I built over 14 months.
+A full-stack Next.js system I built over 14 months for Retzef, a wallpaper-installation business.
 
 | | |
 |---|---|
@@ -38,7 +38,7 @@ flowchart LR
     iOS[iOS app] --> API
 ```
 
-**In this repository:** the workflow rules (highlighted above) and their tests, plus a demo UI built only for this portfolio.
+
 
 ## Engineering decisions
 
@@ -48,35 +48,54 @@ flowchart LR
 | **Guards return reasons, not booleans** ([`lib/status-guards.ts`](lib/status-guards.ts), [`lib/workflow-requirements.ts`](lib/workflow-requirements.ts)) | A blocked button that doesn't say why creates support calls. Each guard returns the missing prerequisites, such as unprepared items, no delivery date or an outstanding balance, and the UI shows them. |
 | **Departure requires full payment and a date** | The most expensive mistake is a truck leaving for an unpaid or unscheduled job. The rule lives in the domain layer, not in a form. |
 | **Legacy statuses map forward** ([`domain/status/legacyStatusMap.ts`](domain/status/legacyStatusMap.ts)) | The status model was redesigned while real orders existed. Old statuses still display and resolve to their new equivalents, but nothing can create them anymore. |
-| **Rules have no framework dependencies** | In production they sit behind Prisma and Next.js. Here the same logic runs in a plain React demo and in Vitest without changes, apart from swapping the Prisma enums for TypeScript unions. |
+| **Rules are plain functions** | The workflow rules depend only on the Prisma status enum, not on Next.js or the database client, so API routes, workers and tests all call the same code. |
 
 ## What's in this repo
 
-| Part | Origin |
-|---|---|
-| Status machine, guards, requirement mapping, legacy map | Extracted from the production codebase. Prisma enums replaced with TypeScript types. |
-| Workflow regression tests | Adapted from the production test suite |
-| Demo UI, fictional orders, in-memory history | Built for this portfolio |
+```
+app/            Next.js App Router: pages and 171 API routes
+components/     React UI (queue, calendar, kanban, map, dashboards)
+lib/            Domain services, workflow rules, integrations (WooCommerce, Twilio, Google)
+domain/         Status model and legacy mapping
+workers/        BullMQ background jobs
+prisma/         Schema (81 models) and migrations
+tests/          Vitest unit and integration tests, Playwright e2e
+ios/            OrdexApp: SwiftUI companion app (XcodeGen project)
+infra/          Local WooCommerce test store (WordPress Playground)
+k8s/            Kubernetes manifests (example secrets only)
+docs/release/   Release, deployment and tenant-isolation notes
+demo/           Single-file portfolio demo with fictional orders
+```
 
-[`extraction-manifest.json`](extraction-manifest.json) records the source revision and a SHA-256 hash for every extracted file.
 
-## Run it from source
+## Run it locally
 
-Requires Node.js 22.12 or later. No API keys or database.
+Requires Node.js 22, PostgreSQL and Redis. Every integration key is optional for local development.
 
 ```bash
 npm ci
-npm run dev          # Vite dev server
-npm test             # 40 unit tests: transitions, guards, payment, scheduling, hold/resume
-npm run e2e          # Playwright: full flow, RTL, 390/768/1440 px, no external requests
-npm run build:demo   # rebuilds the single-file demo/index.html
+cp .env.example .env          # fill in DATABASE_URL, REDIS_URL and AUTH_JWT_SECRET
+npx prisma migrate deploy
+npm run seed                  # fictional demo data
+npm run dev                   # http://localhost:3000
 ```
 
-**A walk through the demo:**
+```bash
+npm test                      # Vitest
+npm run typecheck
+npm run test:smoke            # Playwright smoke test
+```
+
+`docker compose -f docker-compose.dev.yml up -d` starts PostgreSQL and Redis. [`docs/release/local-demo.md`](docs/release/local-demo.md) describes the full local pilot demo, including a WooCommerce test store.
+
+**iOS:** `cd ios && xcodegen generate`, then open `OrdexApp.xcodeproj`.
+
+**A walk through the single-file demo** ([`demo/index.html`](demo/index.html)):
 1. Pick an order and move it to **בטיפול** (in progress).
 2. Try **מוכן** (ready). It's blocked until the items are marked as prepared.
 3. Try **בדרך** (out for delivery). It's blocked until a delivery date is set and payment is confirmed.
 4. Complete the order and look at its action history.
+
 
 ## How I built it
 
@@ -84,6 +103,8 @@ I designed the domain model, the workflow rules and the integrations, and I own 
 
 ## Boundaries
 
-All demo data is fictional. Payment in the demo is a toggle: no charge or payment provider is involved. The demo has no backend, authentication or integrations, and isn't meant for real customer data.
+All demo and seed data is fictional. No credentials are committed: configuration comes from environment variables (see `.env.example`), and the repository is scanned with gitleaks in CI.
 
 **Rights:** all rights reserved. The source is published for portfolio review, and no open-source license is granted.
+
+The repository was published as a clean snapshot of the production codebase. The development history (1,750+ commits) stays private.

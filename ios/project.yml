@@ -1,0 +1,103 @@
+name: OrdexApp
+options:
+  bundleIdPrefix: il.ordex
+  deploymentTarget:
+    iOS: "17.0"
+  defaultConfig: Debug
+  xcodeVersion: "26.4"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    PRODUCT_BUNDLE_IDENTIFIER: il.ordex.app
+    DEVELOPMENT_TEAM: Z3XLCBKN9K
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    INFOPLIST_FILE: OrdexApp/Info.plist
+    CODE_SIGN_STYLE: Automatic
+    GENERATE_INFOPLIST_FILE: YES
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    STRING_CATALOG_GENERATE_SYMBOLS: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
+    INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "הגישה למיקומך משמשת להצגת ההזמנות הקרובות על המפה"
+    INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription: "הגישה למיקומך משמשת לניהול משלוחים"
+    TARGETED_DEVICE_FAMILY: "1"
+  configs:
+    Debug:
+      API_BASE_URL: "https://api.ordex.invalid"
+    Release:
+      API_BASE_URL: "https://api.ordex.invalid"
+
+targets:
+  OrdexApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: OrdexApp
+        type: group
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: il.ordex.app
+    entitlements:
+      path: OrdexApp/OrdexApp.entitlements
+    info:
+      path: OrdexApp/Info.plist
+      properties:
+        CFBundleDisplayName: Ordex
+        CFBundleName: OrdexApp
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        OrdexAPIBaseURL: "$(API_BASE_URL)"
+        NSLocationWhenInUseUsageDescription: "הגישה למיקומך משמשת להצגת ההזמנות הקרובות על המפה"
+        UIRequiresFullScreen: false
+        UIStatusBarStyle: UIStatusBarStyleDefault
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+
+  OrdexAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: OrdexAppTests
+    dependencies:
+      - target: OrdexApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: il.ordex.app.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  OrdexAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: OrdexAppUITests
+    dependencies:
+      - target: OrdexApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: il.ordex.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  OrdexApp:
+    build:
+      targets:
+        OrdexApp: all
+    run:
+      config: Debug
+      environmentVariables:
+        API_BASE_URL: "https://api.ordex.invalid"
+    test:
+      config: Debug
+      targets:
+        - OrdexAppTests
+        - OrdexAppUITests
+    archive:
+      config: Release

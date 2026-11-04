@@ -1,0 +1,23 @@
+{
+  "name": "רצף — ניהול הזמנות",
+  "short_name": "רצף",
+  "description": "ניהול לקוחות, הזמנות ותפעול במקום אחד.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#2361E8",
+  "background_color": "#F8FAFF",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "he",
+  "start_url": "/"
+}

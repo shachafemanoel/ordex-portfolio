@@ -1,0 +1,15 @@
+{
+  "id": 202,
+  "name": "Desk",
+  "sku": null,
+  "type": "variable",
+  "status": "publish",
+  "description": "<p>Office desk in sizes</p>",
+  "price": null,
+  "manage_stock": false,
+  "stock_quantity": null,
+  "images": [ { "src": "https://example.com/desk.jpg" } ],
+  "categories": [ { "id": 2, "name": "Desks", "slug": "desks" } ],
+  "meta_data": []
+}
+

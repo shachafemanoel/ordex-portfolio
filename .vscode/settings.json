@@ -1,0 +1,32 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
+  "files.exclude": {
+    "node_modules": true,
+    ".next": true,
+    "dist": true,
+    "build": true,
+    "*.tsbuildinfo": true
+  },
+  "search.exclude": {
+    "node_modules": true,
+    ".next": true,
+    "dist": true,
+    "build": true,
+    "*.lock": true
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["className:\\s*['\"]([^'\"]*)['\"]"]
+  ],
+  "chatgpt.commentCodeLensEnabled": true,
+  "cSpell.words": ["pgbouncer", "shachafemanoel", "sslmode"]
+}

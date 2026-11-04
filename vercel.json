@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/stale-orders-web-push",
+      "schedule": "0 7 * * *"
+    }
+  ]
+}

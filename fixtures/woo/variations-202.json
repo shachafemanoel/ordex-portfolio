@@ -1,0 +1,25 @@
+[
+  {
+    "id": 3001,
+    "sku": "DESK-120",
+    "price": "590",
+    "regular_price": "650",
+    "sale_price": null,
+    "manage_stock": true,
+    "stock_quantity": 5,
+    "image": { "src": "https://example.com/desk-120.jpg" },
+    "attributes": [ { "name": "Size", "option": "120cm" } ]
+  },
+  {
+    "id": 3002,
+    "sku": null,
+    "price": "790",
+    "regular_price": "790",
+    "sale_price": null,
+    "manage_stock": true,
+    "stock_quantity": 2,
+    "image": { "src": "https://example.com/desk-160.jpg" },
+    "attributes": [ { "name": "Size", "option": "160cm" } ]
+  }
+]
+

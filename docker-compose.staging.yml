@@ -1,0 +1,417 @@
+version: '3.8'
+
+# Ordex OMS - Staging Environment Configuration
+# Optimized for staging/testing with comprehensive monitoring
+
+services:
+  # Main Application
+  oms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        NODE_VERSION: '20'
+        BUILD_DATE: '${BUILD_DATE}'
+        BUILD_REF: '${BUILD_REF}'
+        BUILD_VERSION: '${BUILD_VERSION}'
+    image: '${REGISTRY:-ghcr.io}/${IMAGE_NAME:-ordex/oms}:${IMAGE_TAG:-staging}'
+    container_name: ordex-staging-app
+    restart: unless-stopped
+    ports:
+      - '${APP_PORT:-3000}:3000'
+    environment:
+      NODE_ENV: staging
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ordex_staging}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-}@redis:6379
+      PORT: 3000
+      HOSTNAME: '0.0.0.0'
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      TIMEZONE: ${TIMEZONE:-Asia/Jerusalem}
+      
+      # Feature flags for staging
+      ENABLE_METRICS: true
+      ENABLE_REQUEST_LOGGING: true
+      DEBUG_MODE: ${DEBUG_MODE:-true}
+      MOCK_EXTERNAL_APIS: ${MOCK_EXTERNAL_APIS:-false}
+      
+      # Security (relaxed for staging)
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 200
+      SESSION_TIMEOUT: 7200
+      
+      # External services (staging credentials)
+      GOOGLE_CLIENT_EMAIL: ${STAGING_GOOGLE_CLIENT_EMAIL}
+      GOOGLE_PRIVATE_KEY: ${STAGING_GOOGLE_PRIVATE_KEY}
+      GOOGLE_CALENDAR_ID: ${STAGING_GOOGLE_CALENDAR_ID}
+      MAPBOX: ${STAGING_MAPBOX}
+      NEXT_PUBLIC_MAPBOX_TOKEN: ${STAGING_NEXT_PUBLIC_MAPBOX_TOKEN}
+      
+      # Messaging (staging)
+      TWILIO_ACCOUNT_SID: ${STAGING_TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${STAGING_TWILIO_AUTH_TOKEN}
+      TWILIO_FROM_NUMBER: ${STAGING_TWILIO_FROM_NUMBER}
+      
+      # Security keys
+      ENCRYPTION_KEY: ${STAGING_ENCRYPTION_KEY}
+      JWT_SECRET: ${STAGING_JWT_SECRET}
+      CRON_KEY: ${STAGING_CRON_KEY}
+      
+      # WooCommerce (staging store)
+      WOOCOMMERCE_BASE_URL: ${STAGING_WOOCOMMERCE_BASE_URL}
+      WOOCOMMERCE_CONSUMER_KEY: ${STAGING_WOOCOMMERCE_CONSUMER_KEY}
+      WOOCOMMERCE_CONSUMER_SECRET: ${STAGING_WOOCOMMERCE_CONSUMER_SECRET}
+      
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ordex-staging
+    volumes:
+      - staging_app_logs:/app/logs
+      - staging_backups:/app/backups
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health/readiness']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 768M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: ordex-staging-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ordex_staging}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: '--auth-host=md5'
+      POSTGRES_HOST_AUTH_METHOD: md5
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - staging_postgres_data:/var/lib/postgresql/data
+      - staging_backups:/backups
+    ports:
+      - '127.0.0.1:${POSTGRES_PORT:-5433}:5432'
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-ordex_staging}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    command: >
+      postgres
+      -c shared_preload_libraries=pg_stat_statements
+      -c pg_stat_statements.track=all
+      -c max_connections=50
+      -c shared_buffers=128MB
+      -c effective_cache_size=512MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=32MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=8MB
+      -c log_statement=mod
+      -c log_min_duration_statement=500
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ordex-staging-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD:-}
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+    volumes:
+      - staging_redis_data:/data
+    ports:
+      - '127.0.0.1:${REDIS_PORT:-6380}:6379'
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+
+  # Background worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    image: '${REGISTRY:-ghcr.io}/${IMAGE_NAME:-ordex/oms}:${IMAGE_TAG:-staging}'
+    container_name: ordex-staging-worker
+    restart: unless-stopped
+    command: ['node', 'workers/index.js']
+    environment:
+      NODE_ENV: staging
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ordex_staging}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-}@redis:6379
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      TIMEZONE: ${TIMEZONE:-Asia/Jerusalem}
+      
+      # Worker-specific config
+      WORKER_CONCURRENCY: 3
+      WORKER_MAX_JOBS: 100
+      
+      # External services
+      TWILIO_ACCOUNT_SID: ${STAGING_TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${STAGING_TWILIO_AUTH_TOKEN}
+      TWILIO_FROM_NUMBER: ${STAGING_TWILIO_FROM_NUMBER}
+      GOOGLE_CLIENT_EMAIL: ${STAGING_GOOGLE_CLIENT_EMAIL}
+      GOOGLE_PRIVATE_KEY: ${STAGING_GOOGLE_PRIVATE_KEY}
+      GOOGLE_CALENDAR_ID: ${STAGING_GOOGLE_CALENDAR_ID}
+      
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: ordex-staging-nginx
+    restart: unless-stopped
+    ports:
+      - '${NGINX_HTTP_PORT:-8080}:80'
+      - '${NGINX_HTTPS_PORT:-8443}:443'
+    volumes:
+      - ./nginx/staging.nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - staging_nginx_logs:/var/log/nginx
+    depends_on:
+      oms-app:
+        condition: service_healthy
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+
+  # Prometheus (lightweight monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ordex-staging-prometheus
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${PROMETHEUS_PORT:-9091}:9090'
+    volumes:
+      - ./monitoring/prometheus/staging.prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/rules:/etc/prometheus/rules:ro
+      - staging_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.enable-remote-write-receiver'
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ordex-staging-grafana
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${GRAFANA_PORT:-3002}:3000'
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-staging123}
+      GF_USERS_ALLOW_SIGN_UP: true
+      GF_ANALYTICS_REPORTING_ENABLED: false
+      GF_ANALYTICS_CHECK_FOR_UPDATES: false
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: false
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource'
+    volumes:
+      - staging_grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - ordex-staging
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+
+  # Mailcatcher (for email testing)
+  mailcatcher:
+    image: sj26/mailcatcher:latest
+    container_name: ordex-staging-mailcatcher
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:1025:1025'  # SMTP
+      - '127.0.0.1:1080:1080'  # Web UI
+    networks:
+      - ordex-staging
+
+  # Redis Commander (Redis GUI)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: ordex-staging-redis-gui
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: 'staging:redis:6379'
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+    ports:
+      - '127.0.0.1:8081:8081'
+    depends_on:
+      - redis
+    networks:
+      - ordex-staging
+
+  # pgAdmin (Database GUI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ordex-staging-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ordex.staging
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-staging123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '127.0.0.1:5050:80'
+    depends_on:
+      - postgres
+    networks:
+      - ordex-staging
+    volumes:
+      - staging_pgadmin_data:/var/lib/pgadmin
+
+  # Log aggregator (for centralized logging)
+  fluent-bit:
+    image: fluent/fluent-bit:latest
+    container_name: ordex-staging-fluent-bit
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/fluent-bit/staging.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - staging_app_logs:/var/log/app:ro
+      - staging_nginx_logs:/var/log/nginx:ro
+    networks:
+      - ordex-staging
+    depends_on:
+      - oms-app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
+
+networks:
+  ordex-staging:
+    driver: bridge
+    name: ordex-staging-network
+
+volumes:
+  staging_postgres_data:
+    driver: local
+    name: ordex-staging-postgres-data
+  staging_redis_data:
+    driver: local
+    name: ordex-staging-redis-data
+  staging_prometheus_data:
+    driver: local
+    name: ordex-staging-prometheus-data
+  staging_grafana_data:
+    driver: local
+    name: ordex-staging-grafana-data
+  staging_pgadmin_data:
+    driver: local
+    name: ordex-staging-pgadmin-data
+  staging_nginx_logs:
+    driver: local
+    name: ordex-staging-nginx-logs
+  staging_app_logs:
+    driver: local
+    name: ordex-staging-app-logs
+  staging_backups:
+    driver: local
+    name: ordex-staging-backups

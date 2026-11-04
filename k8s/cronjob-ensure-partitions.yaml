@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ensure-month-partitions
+  namespace: ordex
+spec:
+  schedule: "0 2 1 * *"  # 2:00 on the 1st of each month
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: ensure
+              image: ghcr.io/OWNER/REPO:latest
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: oms-secrets
+              command:
+                - sh
+                - -lc
+                - |
+                  psql "$DATABASE_URL" -f /app/sql/partitioning.sql && \
+                  psql "$DATABASE_URL" -c "CALL ensure_month_partitions(EXTRACT(YEAR FROM NOW())::int, EXTRACT(MONTH FROM NOW())::int)" && \
+                  psql "$DATABASE_URL" -c "CALL ensure_month_partitions(EXTRACT(YEAR FROM NOW() + INTERVAL '1 month')::int, EXTRACT(MONTH FROM NOW() + INTERVAL '1 month')::int)"
+

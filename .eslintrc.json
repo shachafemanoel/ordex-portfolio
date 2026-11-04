@@ -1,0 +1,31 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "prefer-const": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+
+    // Import boundary enforcement for new architecture
+    "no-restricted-imports": ["error", {
+      "patterns": [
+        {
+          "group": ["features/*/components/*", "features/*/hooks/*", "features/*/utils/*"],
+          "message": "Import from feature barrel (index.ts) only. Use: import { Component } from 'features/module'"
+        },
+        {
+          "group": ["../../features/*", "../../../features/*"],
+          "message": "Features cannot import from other features. Extract shared logic to shared/lib/"
+        },
+        {
+          "group": ["**/components/index", "**/hooks/index", "**/utils/index"],
+          "message": "No nested barrel exports allowed. Only feature-level and shared/ui barrels permitted."
+        },
+        {
+          "group": ["shared/ui/*/"],
+          "message": "Import from shared/ui barrel only. Use: import { Card } from 'shared/ui'"
+        }
+      ]
+    }]
+  },
+  "ignorePatterns": ["node_modules/", ".next/", "dist/", "build/"]
+}

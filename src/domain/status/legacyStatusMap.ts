@@ -1,4 +1,4 @@
-import { OrderStatus } from '@/lib/order-status-type';
+import { OrderStatus } from '@prisma/client';
 
 export const LEGACY_STATUS_MAP: Record<string, OrderStatus> = {
   // Already-canonical values

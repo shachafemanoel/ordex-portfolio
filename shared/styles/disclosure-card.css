@@ -1,0 +1,99 @@
+.disclosure-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+  padding: var(--s-2);
+  gap: var(--s-1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--app-shadow-soft);
+}
+
+.disclosure-card:hover {
+  border-color: var(--color-primary-200);
+  background-color: var(--color-bg-hover);
+}
+
+.disclosure-card[data-expanded="true"] {
+  gap: var(--s-3);
+  box-shadow: var(--app-shadow-md);
+  border-color: var(--color-primary-300);
+}
+
+.disclosure-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  cursor: pointer;
+  width: 100%;
+}
+
+.disclosure-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.disclosure-content > div {
+  overflow: hidden;
+}
+
+.disclosure-card[data-expanded="true"] .disclosure-content {
+  grid-template-rows: 1fr;
+}
+
+.line-1 {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: var(--color-text-primary);
+}
+
+.line-2 {
+  font-size: var(--fs-meta);
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  align-items: center;
+  margin-top: 2px;
+}
+
+.quick-actions {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.btn-compact {
+  min-height: var(--hit);
+  min-width: var(--hit);
+  padding: 0 var(--s-3);
+  font-size: var(--fs-meta);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--app-radius-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--app-border);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-compact:hover {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-700);
+}
+
+.btn-compact:active {
+  transform: scale(0.98);
+}

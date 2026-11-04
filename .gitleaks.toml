@@ -1,0 +1,21 @@
+# gitleaks config (added after the Railway env-var incident, Oct 2026).
+# Extends the default ruleset; only known test fixtures/placeholders are allowlisted.
+title = "Ordex gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test fixtures and example placeholders"
+paths = [
+  '''lib/jwt-validation\.security\.test\.ts''',
+  '''tests/api/auth\.test\.ts''',
+  '''k8s/secret-example\.yaml''',
+  '''package-lock\.json''',
+]
+# Dummy values used by CI jobs (.github/workflows/ci.yml) and doc placeholders.
+regexes = [
+  '''(?i)test[-_]?(secret|jwt|key)[-_a-z0-9]*''',
+  '''^test_[A-Za-z0-9_\-]+$''',
+  '''(?i)your[-_]?[a-z_-]*(key|token|secret)''',
+]

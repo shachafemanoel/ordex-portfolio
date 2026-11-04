@@ -1,0 +1,420 @@
+.mapRoot {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  direction: ltr;
+}
+
+.mapCanvas {
+  height: 100%;
+  width: 100%;
+}
+
+.mapRoot :global(.mapboxgl-map),
+.mapRoot :global(.mapboxgl-canvas-container) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Align Mapbox GL canvas within the container (overrides default inline left/top). */
+.mapRoot :global(.mapboxgl-canvas) {
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mapboxPin {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mapboxPin svg {
+  filter: drop-shadow(0 14px 22px rgba(15, 23, 42, 0.24));
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
+}
+
+.mapboxPin:hover svg {
+  filter: drop-shadow(0 18px 26px rgba(15, 23, 42, 0.3));
+}
+
+.mapboxPinSelected svg {
+  transform: scale(1.08);
+  transform-origin: bottom center;
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0)) drop-shadow(0 16px 26px rgba(15, 23, 42, 0.32));
+}
+
+.mapRoot :global(.mapboxgl-control-container .mapboxgl-ctrl-top-left) {
+  top: 10px;
+  left: 10px;
+}
+
+.mapRoot :global(.mapboxgl-ctrl-group) {
+  overflow: hidden;
+  border: 1px solid rgba(219, 229, 245, 0.92);
+  border-radius: 18px;
+  box-shadow: 0 18px 36px -24px rgba(15, 23, 42, 0.28);
+}
+
+.mapRoot :global(.mapboxgl-ctrl-group button) {
+  width: 40px;
+  height: 40px;
+}
+
+.mapRoot :global(.mapboxgl-ctrl-bottom-left) {
+  left: 8px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+.mapRoot :global(.mapboxgl-ctrl-bottom-right) {
+  right: 8px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+.mapRoot :global(.mapboxgl-ctrl.mapboxgl-ctrl-attrib) {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+}
+
+.mapRoot :global(.mapboxgl-ctrl-scale) {
+  min-width: 84px;
+  border: 1px solid rgba(219, 229, 245, 0.92);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f172a;
+  font-size: 10px;
+  font-weight: 800;
+  box-shadow: 0 16px 34px -26px rgba(15, 23, 42, 0.34);
+}
+
+.originMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #0f172a;
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+}
+
+.userMarker {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  background: #0b84ff;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4px rgba(11, 132, 255, 0.16),
+    0 12px 30px -12px rgba(11, 132, 255, 0.45);
+  z-index: 10;
+}
+
+.userMarker::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(11, 132, 255, 0.16);
+  animation: user-pulse 2s infinite;
+}
+
+.customerMarker {
+  --marker-fill: #0b84ff;
+  --marker-ring: #bfdbfe;
+  --marker-text: #ffffff;
+  --marker-glow: rgba(11, 132, 255, 0.28);
+  --marker-opacity: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: var(--marker-opacity);
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease,
+    filter 180ms ease;
+}
+
+.customerMarker:hover {
+  transform: translateY(-2px);
+}
+
+.customerMarker[data-selected='true'] {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.customerMarker[data-deferred='true'] .customerMarkerCaption {
+  color: #64748b;
+}
+
+/* Dashboard: badge-only pins — caption lives in popup / screen reader */
+.customerMarkerDashboard {
+  gap: 0;
+}
+
+.customerMarkerDashboard .customerPinStem {
+  height: 8px;
+  margin-top: -1px;
+}
+
+.customerPinHalo {
+  position: absolute;
+  top: 3px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--marker-glow);
+  filter: blur(9px);
+  opacity: 0.68;
+}
+
+.customerPin {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(255, 255, 255, 0.96);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.24), transparent 38%),
+    var(--marker-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 24px -12px var(--marker-glow),
+    0 10px 18px -10px rgba(15, 23, 42, 0.38);
+}
+
+.customerPinInner {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.customerPinLabel {
+  color: var(--marker-text);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.customerPinStem {
+  width: 2px;
+  height: 11px;
+  margin-top: -2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--marker-fill), rgba(15, 23, 42, 0.12));
+}
+
+.customerMarkerCaption {
+  min-width: 56px;
+  padding: 3px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f172a;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 10px 20px -16px rgba(15, 23, 42, 0.5);
+}
+
+@keyframes user-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.popupCard {
+  max-width: 252px;
+  text-align: right;
+  font-family: 'Heebo', 'Open Sans', sans-serif;
+}
+
+.popupHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.popupEyebrow {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #8fa2bf;
+}
+
+.popupTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.popupPhase {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #edf5ff;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--color-primary-600);
+}
+
+.popupDescription {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.popupMeta {
+  margin: 6px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.popupChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.popupChip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #f8fbff;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 900;
+  color: #58708f;
+}
+
+.popupChipDanger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.popupChipInfo {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.popupActions {
+  display: flex;
+  margin-top: 14px;
+}
+
+.popupActionPrimary {
+  width: 100%;
+  min-height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-primary-500);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -10px rgba(0, 133, 255, 0.5);
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.popupActionPrimary:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.05) brightness(0.97);
+}
+
+.popupActionPrimary:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 16px -8px rgba(15, 23, 42, 0.25);
+}
+
+:global(.ordex-mapbox-popup .mapboxgl-popup-content) {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  box-shadow:
+    0 24px 48px -12px rgba(15, 23, 42, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+:global(.ordex-mapbox-popup .mapboxgl-popup-tip) {
+  border-top-color: #dbe5f5;
+}
+
+@media (max-width: 640px) {
+  .mapRoot :global(.mapboxgl-control-container .mapboxgl-ctrl-top-left) {
+    top: calc(env(safe-area-inset-top, 0px) + 92px);
+    left: 12px;
+  }
+
+  .mapRoot :global(.mapboxgl-ctrl-group) {
+    border-radius: 16px;
+  }
+
+  .mapRoot :global(.mapboxgl-ctrl-group button) {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mapRoot :global(.mapboxgl-ctrl-bottom-left) {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 132px);
+  }
+
+  :global(.ordex-mapbox-popup .mapboxgl-popup-content) {
+    max-width: min(280px, calc(100vw - 32px));
+    padding: 14px;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}

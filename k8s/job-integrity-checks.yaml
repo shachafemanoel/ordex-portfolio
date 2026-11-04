@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: integrity-checks
+  namespace: ordex
+spec:
+  schedule: "0 3 * * *"  # daily at 03:00
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: integrity
+              image: ghcr.io/OWNER/REPO:latest
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: oms-secrets
+              command:
+                - sh
+                - -lc
+                - |
+                  echo "Running integrity checks..." && \
+                  psql "$DATABASE_URL" -f /app/sql/integrity-checks.sql || true
+

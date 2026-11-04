@@ -7,7 +7,7 @@
  * Each status transition requires specific fields and actions to be completed.
  */
 
-import type { OrderStatus } from '@/lib/order-status-type';
+import type { OrderStatus } from '@prisma/client';
 import { ORDER_STATUS_TRANSITIONS } from '@/lib/orderStatus';
 
 /**

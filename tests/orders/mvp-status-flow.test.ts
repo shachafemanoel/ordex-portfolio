@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { OrderStatus } from '@/lib/order-status-type';
+import type { OrderStatus } from '@prisma/client';
 import { getDefaultAdvanceTarget } from '@/lib/orderStatus';
 import { executeGuards } from '@/lib/status-guards';
 import { validateTransition } from '@/lib/status-machine';
@@ -37,8 +37,8 @@ const openStatuses: OrderStatus[] = ['RECEIVED', 'PROCESSING', 'READY', 'IN_TRAN
 const address = { city: 'חיפה', street: 'הרצל', number: '5' };
 const readyOrder = {
   status: 'PROCESSING',
-  customerName: 'לקוח הדגמה',
-  customerPhone: '0000000000',
+  customerName: 'דנה כהן',
+  customerPhone: '0521234567',
   items: [{ id: 'i1', received: false, allocationStatus: 'ALLOCATED' }],
   shippingAddress: address,
 };

@@ -1,0 +1,80 @@
+const { chromium } = require('playwright');
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+let browser;
+(async () => {
+  browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const origin = process.env.TEST_BASE_URL || 'http://localhost:3004';
+  assert(['localhost', '127.0.0.1', '::1'].includes(new URL(origin).hostname), 'Disposable local web server required');
+  assert(process.env.TEST_INVITATION_FILE, 'TEST_INVITATION_FILE is required');
+  const output = process.env.TEST_EVIDENCE_DIR || 'work/invitation-evidence';
+  fs.mkdirSync(output, { recursive: true });
+  const invitation = JSON.parse(fs.readFileSync(process.env.TEST_INVITATION_FILE, 'utf8'));
+  assert(['localhost', '127.0.0.1', '::1'].includes(new URL(invitation.inviteUrl).hostname), 'Only synthetic local invitations are permitted');
+  invitation.inviteUrl = invitation.inviteUrl.replace('http://localhost:3004', origin);
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(invitation.inviteUrl);
+    await page.getByRole('heading', { name: 'הצטרפות לעסק' }).waitFor();
+    await page.getByRole('button', { name: 'הצטרפות לעסק' }).waitFor({ state: 'visible' });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false);
+    if (page.url().endsWith('/invite')) assert.notEqual(await page.getByRole('button', { name: 'הצטרפות לעסק' }).evaluate(node => getComputedStyle(node).backgroundColor), 'rgba(0, 0, 0, 0)');
+    await page.screenshot({ path: path.join(output, `invite-${width}.png`), fullPage: true });
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByLabel('שם מלא', { exact: true }).focus();
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.name), 'password');
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.textContent.trim()), 'הצטרפות לעסק');
+  await page.keyboard.press('Shift+Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.name), 'password');
+  assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).direction), 'rtl');
+  await page.getByLabel('שם מלא', { exact: true }).fill('Synthetic pilot admin');
+  await page.getByLabel('סיסמה', { exact: true }).fill('synthetic-pilot-password');
+  await page.getByRole('button', { name: 'הצטרפות לעסק' }).click();
+  await page.waitForURL('**/orders', { timeout: 30000 });
+  await page.goto(`${origin}/settings/users`);
+  await page.getByRole('heading', { name: 'צוות העסק' }).waitFor({ timeout: 30000 });
+  await page.getByRole('heading', { name: 'חברי העסק', exact: true }).waitFor();
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false);
+    await page.screenshot({ path: path.join(output, `team-${width}.png`), fullPage: true });
+  }
+  const staffEmail = `synthetic-staff-${Date.now()}@example.invalid`;
+  const issued = await page.request.post(`${origin}/api/tenants/invitations`, { data: { email: staffEmail, role: 'OPERATIONS' } });
+  assert.equal(issued.status(), 201);
+  const issuedData = await issued.json();
+  const employee = await browser.newContext();
+  const accepted = await employee.request.post(`${origin}/api/invitations/accept`, { data: { token: issuedData.data.token, name: 'Synthetic staff', password: 'synthetic-pilot-password' } });
+  assert.equal(accepted.status(), 200);
+  const denied = await employee.request.post(`${origin}/api/tenants/invitations`, { data: { email: 'forbidden@example.invalid', role: 'ADMIN' } });
+  assert.equal(denied.status(), 403);
+  const members = await (await page.request.get(`${origin}/api/tenants/members`)).json();
+  const member = members.data.find(row => row.user.email === staffEmail);
+  const removed = await page.request.delete(`${origin}/api/tenants/members`, { data: { id: member.id } });
+  assert.equal(removed.status(), 200);
+  assert.equal((await employee.request.get(`${origin}/api/auth/me`)).status(), 401);
+  await employee.close();
+  const forbidden = await page.request.post(`${origin}/api/auth/tenant`, { data: { tenantId: 'foreign-synthetic-business' } });
+  assert.equal(forbidden.status(), 401);
+  const selector = page.getByLabel('העסק הפעיל', { exact: true });
+  const current = await selector.inputValue();
+  const options = await selector.locator('option').evaluateAll(nodes => nodes.map(node => node.value));
+  if (options.length > 1) {
+    await page.evaluate(() => localStorage.setItem('synthetic-order-draft', 'private draft'));
+    page.once('dialog', dialog => dialog.accept());
+    await selector.selectOption(options.find(value => value !== current));
+    await page.waitForURL('**/orders');
+    assert.equal(await page.evaluate(() => localStorage.getItem('synthetic-order-draft')), null);
+    await page.waitForFunction(() => document.querySelector('select[aria-label="העסק הפעיל"]')?.value);
+    assert.notEqual(await page.getByLabel('העסק הפעיל', { exact: true }).inputValue(), current);
+  }
+  console.log(JSON.stringify({ passed: true, checks: ['invitation UI at 390/768/1440', 'no horizontal overflow', 'browser acceptance and session cookie', 'admin team page', 'foreign selection rejected', 'staff admin access forbidden', 'membership revoke rejects existing cookie', 'business switch clears drafts'], browserErrors: errors }));
+  await browser.close();
+})().catch(error => { console.error(error.message.replace(/#[A-Za-z0-9_-]+/g, '#[redacted]')); process.exitCode = 1; }).finally(() => browser?.close());

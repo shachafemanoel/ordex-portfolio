@@ -1,0 +1,15 @@
+{
+  "id": 101,
+  "name": "Office Chair",
+  "sku": "CHAIR-001",
+  "type": "simple",
+  "status": "publish",
+  "description": "<p>Ergonomic office chair</p>",
+  "price": "349.0",
+  "manage_stock": true,
+  "stock_quantity": 12,
+  "images": [ { "src": "https://example.com/chair.jpg" } ],
+  "categories": [ { "id": 1, "name": "Chairs", "slug": "chairs" } ],
+  "meta_data": []
+}
+

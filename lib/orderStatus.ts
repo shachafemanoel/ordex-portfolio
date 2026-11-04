@@ -1,5 +1,5 @@
 import { mapLegacyStatusToOrderStatus } from '@/domain/status/legacyStatusMap';
-import { OrderStatus } from '@/lib/order-status-type';
+import { OrderStatus } from '@prisma/client';
 
 /**
  * מבנה מרכזי לכל תצורת הסטטוסים במערכת
@@ -314,7 +314,7 @@ export function getStatusesAsOptions() {
 
 export const ORDER_STATUS_OPTIONS = getStatusesAsOptions();
 
-export type { OrderStatus } from '@/lib/order-status-type';
+export type { OrderStatus } from '@prisma/client';
 
 export const ORDER_STATUS = Object.fromEntries(ORDER_STATUS_FLOW.map((s) => [s, s])) as Record<
   OrderStatus,

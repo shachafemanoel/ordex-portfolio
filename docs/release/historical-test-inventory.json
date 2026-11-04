@@ -1,0 +1,658 @@
+{
+  "baseline": "f2456602fa0c6acf23335336be42d1e495e6c612",
+  "observedOn": "2026-10-29",
+  "approvedExceptions": [],
+  "failures": [
+    {
+      "test": "tests/dashboard-metrics.test.ts",
+      "failedAssertions": [
+        "getDashboardMetrics returns calculated dashboard metrics using existing schema fields"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/management-overview.service.test.ts",
+      "failedAssertions": [
+        "ManagementOverviewService returns normalized management overview data without NaN values",
+        "ManagementOverviewService handles null aggregation results gracefully"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/money-properties.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/order-workflow.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/orderWorkflow.test.ts",
+      "failedAssertions": [
+        "order workflow definition validates draft requirements",
+        "order workflow definition computes transition requirement readiness"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/orderWorkflowService.test.ts",
+      "failedAssertions": [
+        "OrderWorkflowService returns workflow state with the order dto",
+        "OrderWorkflowService includes workflow context data for downstream modules"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/orders-rbac.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/receiving.service.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/status-transition.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/webhook-idempotency.race.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/ai-analyze-dashboard.route.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/ai-query.test.ts",
+      "failedAssertions": [
+        "POST /api/ai/query returns AI result payload from analytics agent"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/auth.test.ts",
+      "failedAssertions": [
+        "Authentication API POST /api/auth/login returns a session token for valid credentials",
+        "Authentication API POST /api/auth/register allows admins to register new users",
+        "Authentication API POST /api/auth/register prevents duplicate registrations",
+        "Authentication API GET /api/auth/me returns the authenticated user profile"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/calendar.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/dashboard-orders-consistency.test.ts",
+      "failedAssertions": [
+        "Dashboard ↔ orders list consistency returns aligned totals and status counts"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/orders-actions.test.ts",
+      "failedAssertions": [
+        "orderActionService should execute action successfully when order exists",
+        "orderActionService should throw NOT_FOUND when order does not exist"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/users-token.test.ts",
+      "failedAssertions": [
+        "POST /api/users/:id/token generates a new token for an active user",
+        "POST /api/users/:id/token returns 404 if user not found",
+        "POST /api/users/:id/token returns 400 if user is inactive"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/users.test.ts",
+      "failedAssertions": [
+        "POST /api/users stores a hashed password when creating a user"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/auth/auth.e2e.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/compat/status.compat.spec.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/FinanceDashboard.test.tsx",
+      "failedAssertions": [
+        "FinanceDashboard renders an error empty state when no data is available",
+        "FinanceDashboard renders an empty state when there are no recent payments"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/Modal.test.tsx",
+      "failedAssertions": [
+        "Modal component closes when overlay is clicked"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/OrdersOverviewPage.test.tsx",
+      "failedAssertions": [
+        "OrdersOverviewPage renders loading state",
+        "OrdersOverviewPage renders empty state",
+        "OrdersOverviewPage renders orders list correctly"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/SupplierForm.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/domain/normalizers.test.ts",
+      "failedAssertions": [
+        "domain normalizers roles normalizes explicit enum values",
+        "domain normalizers roles maps legacy aliases to canonical roles",
+        "domain normalizers orders normalizes orders with nested customer and items"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/domain/statusMapping.test.ts",
+      "failedAssertions": [
+        "Status Mapping maps DRAFT to PENDING_ACTION and isDraft=true",
+        "Status Mapping maps TO_DO to PENDING_ACTION and isDraft=false",
+        "Status Mapping maps AWAITING_STOCK to PROCESSING and inventoryStatus=backordered",
+        "Status Mapping maps READY_FOR_INSTALL to READY and inventoryStatus=allocated",
+        "Status Mapping maps COMPLETED to SUPPLIED with completionType=COMPLETED",
+        "Status Mapping maps INSTALLED to SUPPLIED with completionType=INSTALLED",
+        "Status Mapping maps REFUNDED to CANCELLED with paymentStatus=REFUNDED",
+        "Status Mapping maps ON_HOLD to PENDING and onHold=true"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/go/FocusEngine.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/go/NBAEngine.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/integration/ai-mock.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/integration/cron-reminders.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/integration/dashboard-kpi.test.ts",
+      "failedAssertions": [
+        "DashboardService KPIs calculates metrics correctly with data"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/lib/auth-roles.test.ts",
+      "failedAssertions": [
+        "role-based helpers grants full access to admins",
+        "role-based helpers restricts installers to assigned orders",
+        "role-based helpers prevents installers from accessing unrelated orders"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/lib/dashboard-analyzer.test.ts",
+      "failedAssertions": [
+        "analyzeDashboard retries with compact prompt when the first attempt times out",
+        "analyzeDashboard returns fallback analysis when Gemini is unavailable"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/lib/default-admin.test.ts",
+      "failedAssertions": [
+        "ensureDefaultAdminUser creates the default admin when none exists",
+        "ensureDefaultAdminUser updates existing admin missing critical fields",
+        "ensureDefaultAdminUser leaves existing admin untouched when already configured"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/purchasing/sync.test.ts",
+      "failedAssertions": [
+        "Purchasing Sync (Live DB) should synchronize Order -> PurchaseOrder -> Receiving"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/services/CalendarService.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/services/InstallationTaskService.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/services/address-intelligence.test.ts",
+      "failedAssertions": [
+        "AddressIntelligenceService normalizeAddress should return SUSPICIOUS status when Gemini is unavailable",
+        "AddressIntelligenceService normalizeAddress should reject excessively long addresses",
+        "AddressIntelligenceService normalizeAddress should successfully normalize a valid address",
+        "AddressIntelligenceService normalizeAddress should handle missing required parts",
+        "AddressIntelligenceService normalizeAddress should fall back gracefully on Gemini error",
+        "AddressIntelligenceService normalizeAddress should call Gemini with correct timeout"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/services/installation-schedule-service.test.ts",
+      "failedAssertions": [
+        "InstallationScheduleService prevents overlapping slots for the same technician",
+        "InstallationScheduleService creates a slot and updates order when no conflict exists"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/scripts/set-admin-password.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/woo/transform.test.ts",
+      "failedAssertions": [
+        "woo transform maps simple product to one SKU",
+        "woo transform maps variation to SKU with attributes in name and fallback sku code"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/utils/geocodingUtils.test.ts",
+      "failedAssertions": [
+        "geocodingUtils getUserLocation returns coordinates when geolocation is successful",
+        "geocodingUtils getUserLocation returns null when geolocation is not supported",
+        "geocodingUtils getUserLocation returns null when permission is denied",
+        "geocodingUtils getUserLocation returns null when position is unavailable",
+        "geocodingUtils getUserLocation returns null when request timeouts"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/status-canonicalization.test.ts",
+      "failedAssertions": [
+        "Status Canonicalization normalizeToCanonicalStatus should normalize legacy statuses correctly",
+        "Status Canonicalization normalizeToCanonicalStatus should handle lowercase and mixed case inputs",
+        "Status Canonicalization getCanonicalStatusLabel should return correct Hebrew labels",
+        "Status Canonicalization getCanonicalStatusLabel should return \"Unknown\" for invalid inputs (though input is typed)",
+        "Status Canonicalization getCanonicalStatusColor should return tailwind classes",
+        "Status Canonicalization getCanonicalStatusColor should return default color for invalid inputs"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/task-timezone.test.ts",
+      "failedAssertions": [
+        "tomorrowAtTimeInIsrael should return correct UTC time for tomorrow at 10:00 Israel time (winter)",
+        "tomorrowAtTimeInIsrael should return correct UTC time for tomorrow at 10:00 Israel time (summer DST)",
+        "tomorrowAtTimeInIsrael should handle minutes parameter correctly",
+        "tomorrowAtTimeInIsrael should handle transition across DST boundary (spring forward)",
+        "tomorrowAtTimeInIsrael should handle transition across DST boundary (fall back)",
+        "dateTimeInIsrael should convert specific date/time to UTC correctly (winter)",
+        "dateTimeInIsrael should convert specific date/time to UTC correctly (summer DST)",
+        "dateTimeInIsrael should zero out seconds and milliseconds",
+        "Real-world scenarios customer wants to think - callback tomorrow at 10:00",
+        "Real-world scenarios schedule installation for specific date at 9:00am"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/agents/research.route.test.ts",
+      "failedAssertions": [
+        "POST /api/agents/research returns research result payload",
+        "POST /api/agents/research rejects invalid payloads"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/error-handling/management-overview-edge-cases.test.ts",
+      "failedAssertions": [
+        "Management Overview Service - Edge Cases Empty Database Scenarios should return valid structure with all zeros when database is empty",
+        "Management Overview Service - Edge Cases Empty Database Scenarios should handle null aggregate sums gracefully",
+        "Management Overview Service - Edge Cases Partial Data Scenarios should handle customers without orders",
+        "Management Overview Service - Edge Cases Partial Data Scenarios should handle orders without customers (orphaned orders)",
+        "Management Overview Service - Edge Cases Partial Data Scenarios should handle SKUs with missing supplier",
+        "Management Overview Service - Edge Cases Partial Data Scenarios should handle users without orders assigned",
+        "Management Overview Service - Edge Cases Error Handling should return empty stats structure when all queries fail",
+        "Management Overview Service - Edge Cases Error Handling should handle partial transaction failures",
+        "Management Overview Service - Edge Cases Error Handling should not crash on malformed data",
+        "Management Overview Service - Edge Cases Calculations and Aggregations should correctly calculate avgValue when orders exist",
+        "Management Overview Service - Edge Cases Calculations and Aggregations should calculate repeat rate correctly",
+        "Management Overview Service - Edge Cases Calculations and Aggregations should handle division by zero in calculations",
+        "Management Overview Service - Edge Cases Calculations and Aggregations should correctly identify low stock items"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/error-handling/products-edge-cases.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/error-handling/receiving-edge-cases.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/reports/purchase.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/api/notifications/preferences-url-parsing.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/ai/gating.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/finance/FinanceDashboard.test.tsx",
+      "failedAssertions": [
+        "FinanceDashboard renders empty state when there are no recent payments"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/KanbanBoard.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/KanbanOrderOverlay.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/OrderCard.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/services/notification-service.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/services/paymentTrackingService.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/services/purchasing-status.test.ts",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/services/task-service-filter.test.ts",
+      "failedAssertions": [
+        "TaskService.getTasks should include orderId in where clause when orderId is provided",
+        "TaskService.getTasks should include orderIds in where clause when orderIds is provided",
+        "TaskService.getTasks should prioritize orderIds over orderId if both provided"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/ops/ActionButtons.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/ops/ItemsList.test.tsx",
+      "failedAssertions": [
+        "ItemsList renders supplier name when available",
+        "ItemsList renders correct number of items in header"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/components/orders/ops/OrderOverviewCard.test.tsx",
+      "failedAssertions": [],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/components/ui/Badge.test.tsx",
+      "failedAssertions": [
+        "Badge Component renders default variant correctly",
+        "Badge Component renders secondary variant correctly",
+        "Badge Component renders success variant correctly",
+        "Badge Component renders destructive variant correctly"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    },
+    {
+      "test": "tests/unit/components/ui/StatusDisplay.test.tsx",
+      "failedAssertions": [
+        "StatusDisplay Component renders default order status correctly",
+        "StatusDisplay Component renders purchase status correctly",
+        "StatusDisplay Component renders with icon when showIcon is true",
+        "StatusDisplay Component falls back to default for unknown status"
+      ],
+      "status": "REQUIRES_REVIEW",
+      "exceptionApproved": false,
+      "frozenModule": null,
+      "serverBlockingEvidence": null
+    }
+  ]
+}

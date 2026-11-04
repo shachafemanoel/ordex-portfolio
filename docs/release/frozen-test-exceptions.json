@@ -1,0 +1,973 @@
+{
+  "scope": "Guided synthetic-data demo only; not approval for real customer data.",
+  "reviewRequired": true,
+  "exceptions": [
+    {
+      "test": "tests/dashboard-metrics.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/management-overview.service.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/receiving.service.test.ts",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/ai-analyze-dashboard.route.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/ai-query.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/calendar.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/dashboard-orders-consistency.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/orders-actions.test.ts",
+      "frozenModule": "Retired drill/action and reconciliation engines",
+      "reason": "These old drill/action/reconciliation exports have no caller in the active order UI. The server denies their API surface; active transitions use the validated production service and current database/browser checks.",
+      "serverPaths": [
+        "/api/orders/synthetic/drill"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/users-token.test.ts",
+      "frozenModule": "Legacy user token issuance",
+      "reason": "Direct legacy token issuance is denied. Current sessions use verified login/invitation flows and current membership checks.",
+      "serverPaths": [
+        "/api/users/synthetic/token"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/users.test.ts",
+      "frozenModule": "Legacy direct user creation",
+      "reason": "User creation is invitation-only. Direct user writes are denied; member GET lookup remains available and the active session/membership flows are tested.",
+      "serverPaths": [
+        "/api/users"
+      ],
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/auth/auth.e2e.test.ts",
+      "frozenModule": "Retired management overview auth harness",
+      "reason": "This mixed legacy harness imports the removed management route. Active authentication is covered by current auth tests, fourteen real-DB invitation/session checks and actual browser role scenarios.",
+      "serverPaths": [
+        "/api/management/overview"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/compat/status.compat.spec.ts",
+      "frozenModule": "Retired drill/action and reconciliation engines",
+      "reason": "These old drill/action/reconciliation exports have no caller in the active order UI. The server denies their API surface; active transitions use the validated production service and current database/browser checks.",
+      "serverPaths": [
+        "/api/orders/synthetic/drill"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/FinanceDashboard.test.tsx",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/OrdersOverviewPage.test.tsx",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/SupplierForm.test.tsx",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/go/FocusEngine.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/go/NBAEngine.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/integration/ai-mock.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/integration/cron-reminders.test.ts",
+      "frozenModule": "Outbound notifications and cron",
+      "reason": "Outbound messages and cron are outside the demo. Their server APIs are denied and tenant runtime does not send web push.",
+      "serverPaths": [
+        "/api/notifications/preferences"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/integration/dashboard-kpi.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/lib/dashboard-analyzer.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/lib/default-admin.test.ts",
+      "frozenModule": "Default/automatic admin bootstrap",
+      "reason": "Automatic/default admin bootstrap is denied at the server and the helper throws in production. Explicit shell provisioning uses one-time tenant invitations.",
+      "serverPaths": [
+        "/api/bootstrap"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/purchasing/sync.test.ts",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/scripts/set-admin-password.test.ts",
+      "frozenModule": "Default/automatic admin bootstrap",
+      "reason": "Automatic/default admin bootstrap is denied at the server and the helper throws in production. Explicit shell provisioning uses one-time tenant invitations.",
+      "serverPaths": [
+        "/api/bootstrap"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/services/CalendarService.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/services/InstallationTaskService.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/services/installation-schedule-service.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/woo/transform.test.ts",
+      "frozenModule": "Retired global Woo stack",
+      "reason": "The old global Woo transform/client is disabled in tenant runtime and its APIs are denied. Current per-business transport/processors have transform, import, real-DB and browser checks; missing SKUs require review instead of fabrication.",
+      "serverPaths": [
+        "/api/woo/sync/catalog"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/utils/geocodingUtils.test.ts",
+      "frozenModule": "Frozen delivery map geolocation",
+      "reason": "Only DeliveriesMapboxCanvas imports this utility. Delivery/map pages and geocoding APIs are frozen; the active workflow uses explicit structured addresses.",
+      "serverPaths": [
+        "/api/maps/geocode"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/unit/task-timezone.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/agents/research.route.test.ts",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/error-handling/management-overview-edge-cases.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/error-handling/receiving-edge-cases.test.ts",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/notifications/preferences-url-parsing.test.ts",
+      "frozenModule": "Outbound notifications and cron",
+      "reason": "Outbound messages and cron are outside the demo. Their server APIs are denied and tenant runtime does not send web push.",
+      "serverPaths": [
+        "/api/notifications/preferences"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/api/reports/purchase.test.ts",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/ai/gating.test.tsx",
+      "frozenModule": "AI and assistant features",
+      "reason": "AI is outside this release. Removed AI/assistant modules cannot be reached through the server; all AI/agent API families are denied.",
+      "serverPaths": [
+        "/api/ai/query"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/finance/FinanceDashboard.test.tsx",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/orders/KanbanBoard.test.tsx",
+      "frozenModule": "Retired kanban/order-card views",
+      "reason": "The removed kanban components are not used by the active order list/details. Frozen board pages redirect to orders; drill and action APIs are denied.",
+      "serverPaths": [
+        "/api/orders/synthetic/drill"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/orders/KanbanOrderOverlay.test.tsx",
+      "frozenModule": "Retired kanban/order-card views",
+      "reason": "The removed kanban components are not used by the active order list/details. Frozen board pages redirect to orders; drill and action APIs are denied.",
+      "serverPaths": [
+        "/api/orders/synthetic/drill"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/components/orders/OrderCard.test.tsx",
+      "frozenModule": "Retired kanban/order-card views",
+      "reason": "The removed kanban components are not used by the active order list/details. Frozen board pages redirect to orders; drill and action APIs are denied.",
+      "serverPaths": [
+        "/api/orders/synthetic/drill"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/unit/services/notification-service.test.ts",
+      "frozenModule": "Outbound notifications and cron",
+      "reason": "Outbound messages and cron are outside the demo. Their server APIs are denied and tenant runtime does not send web push.",
+      "serverPaths": [
+        "/api/notifications/preferences"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/unit/services/paymentTrackingService.test.ts",
+      "frozenModule": "Legacy dashboard and finance",
+      "reason": "Legacy dashboards, management and financial trackers are frozen. Active /api/orders/dashboard uses its own tenant-scoped Prisma counts and is verified separately from these legacy analytics contracts.",
+      "serverPaths": [
+        "/api/dashboard"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/unit/services/purchasing-status.test.ts",
+      "frozenModule": "Full procurement and receiving",
+      "reason": "Full procurement is outside the release. The active flow updates item readiness without invoking the retired purchase-order/receiving APIs.",
+      "serverPaths": [
+        "/api/receiving"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    },
+    {
+      "test": "tests/unit/services/task-service-filter.test.ts",
+      "frozenModule": "Legacy calendar, slots and task board",
+      "reason": "The old calendar/slot/task-board exports are removed or shims. Their APIs are denied; current scheduling uses /api/orders/:id/schedule and installation transitions, covered by real DB and browser acceptance.",
+      "serverPaths": [
+        "/api/calendar"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "proof": [
+        "lib/tenancy/mvp-routes.ts",
+        "proxy.ts",
+        "tests/tenancy/frozen-exceptions.test.ts",
+        "tests/e2e/frozen-modules.spec.ts"
+      ],
+      "reviewStatus": "PROPOSED_REQUIRES_PR_REVIEW"
+    }
+  ]
+}

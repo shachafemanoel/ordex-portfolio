@@ -1,0 +1,2023 @@
+/* Import Design System CSS Variables */
+@import '../shared/styles/theme.css';
+@import '../shared/styles/ops-tokens.css';
+@import '../shared/styles/disclosure-card.css';
+@import '../shared/styles/animations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ── App shell layout tokens ────────────────────────────────────────────── */
+  /* These extend theme.css with app-layout-specific values. */
+  /* Font families, spacing, radius, color primitives live in theme.css only. */
+
+  /* Shadcn-ui radius alias (shadcn reads --radius) */
+  --radius: var(--app-radius-xl);
+  /* App shell surface radius */
+  --app-shell-radius: var(--app-radius-2xl);
+  /* Fixed header bar height (matches TopNavigation h-[4.25rem]) */
+  --app-header-height: 4.25rem;
+
+  /* Urgency Color System (Consolidated) */
+  --urgency-critical: #dc2626;
+  --urgency-critical-bg: #fef2f2;
+  --urgency-critical-border: #fca5a5;
+  --urgency-high: #ea580c;
+  --urgency-high-bg: #fff7ed;
+  --urgency-high-border: #fed7aa;
+  --urgency-medium: #d97706;
+  --urgency-medium-bg: #fffbeb;
+  --urgency-normal: var(--color-primary-600);
+  --urgency-done: #16a34a;
+
+  /* Responsive Typography & Spacing Scale (Fluid) */
+  --fluid-page-title: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  --fluid-section-title: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --fluid-metric-value: clamp(1.5rem, 1.2rem + 2vw, 3rem);
+  --fluid-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fluid-caption: clamp(0.875rem, 0.85rem + 0.15vw, 1rem);
+
+  /* Shadcn Variable Mapping (Modernized) */
+  --background: 220 33% 98%;
+  --foreground: 224 71% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71% 4%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71% 4%;
+  --primary: 221 100% 50%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221 100% 50%;
+}
+
+/* Shared surface utilities */
+.glass-frosted {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--app-radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.glass-pill {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.glass-dock {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--app-radius-2xl);
+  padding: 0.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+.glow-accent {
+  box-shadow: var(--glow-accent);
+}
+
+.app-card-premium {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--app-radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-slow), border-color var(--transition-base);
+}
+
+.app-card-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-200);
+}
+
+/* Surface Utilities */
+.surface-bright {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+.surface-muted {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+}
+
+.surface-dark {
+  background-color: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.surface-primary {
+  background-color: var(--color-primary-600);
+  color: white;
+}
+
+.surface-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--app-radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.surface-subtle {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--app-radius-lg);
+}
+
+/* ============================================
+   Semantic tokens for pages (theme.css variables)
+   Use these instead of Tailwind palette utilities (slate/gray/red/…) in app routes.
+   Note: Tailwind `text-primary` is brand blue — use .text-fg / .text-fg-muted for body hierarchy.
+   ============================================ */
+@layer utilities {
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  .bg-surface-muted {
+    background-color: var(--color-surface-muted);
+  }
+  .bg-surface-highlight {
+    background-color: var(--color-neutral-100);
+  }
+  .bg-surface-elevated {
+    background-color: var(--color-surface);
+  }
+  .text-fg {
+    color: var(--color-text-primary);
+  }
+  .text-fg-muted {
+    color: var(--color-text-secondary);
+  }
+  .text-fg-subtle {
+    color: var(--color-text-tertiary);
+  }
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+  .text-success {
+    color: var(--color-success);
+  }
+  .text-warning {
+    color: var(--color-warning);
+  }
+  .text-danger {
+    color: var(--color-danger);
+  }
+  .text-info {
+    color: var(--color-info);
+  }
+  .text-on-inverse {
+    color: var(--color-text-inverse);
+  }
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      to left,
+      var(--color-primary-700),
+      var(--color-primary-600)
+    );
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .text-accent {
+    /* 600 = text-safe orange; 500 is decorative only */
+    color: var(--color-accent-600);
+  }
+
+  .text-whatsapp {
+    color: var(--color-whatsapp);
+  }
+
+  .surface-danger-soft {
+    border: 1px solid color-mix(in srgb, var(--color-danger-500) 20%, transparent);
+    background-color: var(--color-danger-50);
+    color: var(--color-danger-700);
+  }
+
+  .bg-surface-translucent {
+    background-color: color-mix(in srgb, var(--color-surface) 82%, transparent);
+  }
+
+  .bg-surface-translucent-strong {
+    background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  }
+
+  .border-surface-soft {
+    border-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+
+  .border-surface-strong {
+    border-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  }
+
+  .bg-info-soft {
+    background-color: var(--color-primary-50);
+  }
+
+  .text-brand {
+    color: var(--color-primary-600);
+  }
+
+  .text-brand-deep {
+    color: var(--color-primary-700);
+  }
+
+  .border-brand-soft {
+    border-color: color-mix(in srgb, var(--color-primary-600) 30%, transparent);
+  }
+
+  .ring-brand-soft {
+    --tw-ring-color: color-mix(in srgb, var(--color-primary-600) 20%, transparent);
+  }
+
+  /* Ops board / glass panels — token-only surfaces */
+  .surface-ops-glass {
+    border-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface) 82%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary-50) 88%, var(--color-surface)) 100%
+    );
+  }
+
+  .surface-ops-kpi-alert {
+    border-color: color-mix(in srgb, var(--color-warning-500) 32%, transparent);
+    background: linear-gradient(
+      180deg,
+      var(--color-warning-50) 0%,
+      color-mix(in srgb, var(--color-warning-50) 70%, var(--tone-accent-bg)) 100%
+    );
+  }
+
+  .surface-ops-kpi-active {
+    border-color: color-mix(in srgb, var(--color-primary-500) 35%, transparent);
+    background: linear-gradient(
+      180deg,
+      var(--color-primary-50) 0%,
+      var(--color-primary-100) 100%
+    );
+  }
+
+  .surface-ops-kpi-contact {
+    border-color: color-mix(in srgb, var(--color-success-500) 30%, transparent);
+    background: linear-gradient(
+      180deg,
+      var(--color-success-50) 0%,
+      color-mix(in srgb, var(--color-success-50) 65%, var(--color-surface-muted)) 100%
+    );
+  }
+
+  .text-ops-muted {
+    color: color-mix(in srgb, var(--color-primary-600) 42%, var(--color-text-secondary));
+  }
+
+  .text-ops-icon-muted {
+    color: color-mix(in srgb, var(--color-primary-500) 35%, var(--color-text-tertiary));
+  }
+
+  .bg-status-warning {
+    background-color: var(--color-warning-500);
+  }
+  .bg-status-info {
+    background-color: var(--color-primary-500);
+  }
+  .bg-status-success {
+    background-color: var(--color-success-500);
+  }
+
+  .bg-divider {
+    background-color: var(--color-neutral-200);
+  }
+
+  .hover\:bg-danger-soft:hover {
+    background-color: color-mix(in srgb, var(--color-danger-500) 12%, transparent);
+  }
+
+  .surface-deliveries-aside {
+    border-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    background: linear-gradient(
+      180deg,
+      var(--color-primary-50) 0%,
+      var(--color-surface-muted) 100%
+    );
+  }
+
+  .bg-accent {
+    background-color: var(--color-accent-500);
+  }
+
+  .bg-accent-deep {
+    background-color: var(--color-accent-600);
+  }
+
+  .hover\:bg-accent-deep:hover {
+    background-color: var(--color-accent-600);
+  }
+
+  .bg-neutral-mute {
+    background-color: var(--color-neutral-200);
+  }
+
+  .bg-brand-solid {
+    background-color: var(--color-primary-700);
+  }
+
+  .hover\:bg-brand-solid-hover:hover {
+    background-color: var(--color-primary-800);
+  }
+
+  .surface-select-success {
+    border-color: var(--color-success-200);
+    background-color: color-mix(in srgb, var(--color-success-50) 60%, transparent);
+  }
+
+  .focus-ring-success:focus {
+    --tw-ring-color: var(--color-success-500);
+  }
+
+  .bg-inverse-strip {
+    background-color: var(--color-neutral-900);
+  }
+
+  .bg-map-shell {
+    background-color: var(--color-bg-inverse);
+  }
+
+  .vignette-map-top {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-neutral-950) 40%, transparent),
+      transparent
+    );
+  }
+
+  .vignette-map-bottom {
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-neutral-950) 30%, transparent),
+      transparent
+    );
+  }
+
+  .surface-success-icon-wrap {
+    background-color: var(--color-success-50);
+    color: var(--color-success-600);
+  }
+
+  .surface-info-panel {
+    border: 1px solid var(--color-primary-100);
+    background-color: color-mix(in srgb, var(--color-primary-50) 30%, transparent);
+  }
+
+  .text-info-label {
+    color: var(--color-primary-500);
+  }
+
+  .bg-success-solid {
+    background-color: var(--color-success-600);
+  }
+
+  .hover\:bg-inverse-deep:hover {
+    background-color: var(--color-neutral-800);
+  }
+
+  .text-on-inverse-muted {
+    color: color-mix(in srgb, var(--color-text-inverse) 90%, transparent);
+  }
+
+  .bg-pull-bar {
+    background-color: color-mix(in srgb, var(--color-neutral-300) 80%, transparent);
+  }
+
+  .border-subtle-light {
+    border-color: var(--color-neutral-100);
+  }
+
+  .bg-dot-muted {
+    background-color: var(--color-neutral-300);
+  }
+
+  .bg-nav-cta {
+    background-color: var(--color-primary-600);
+  }
+
+  /* Static map / empty route preview (no raw hex in component) */
+  .bg-static-map-placeholder {
+    background:
+      radial-gradient(
+        circle at top,
+        color-mix(in srgb, var(--color-primary-500) 16%, transparent),
+        transparent 52%
+      ),
+      linear-gradient(
+        135deg,
+        var(--color-primary-50),
+        color-mix(in srgb, var(--color-primary-100) 55%, var(--color-surface-muted)) 48%,
+        var(--color-surface-muted)
+      );
+  }
+
+  .map-caption-gradient {
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-neutral-950) 68%, transparent),
+      color-mix(in srgb, var(--color-neutral-950) 20%, transparent),
+      transparent
+    );
+  }
+
+  .bg-brand-gradient-br {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--color-primary-700),
+      var(--color-primary-600)
+    );
+  }
+
+  .bg-chart-bar {
+    background-image: linear-gradient(
+      to top,
+      var(--color-primary-700),
+      var(--color-primary-600),
+      var(--color-primary-400)
+    );
+  }
+
+  .bg-surface-muted-translucent {
+    background-color: color-mix(in srgb, var(--color-surface-muted) 80%, transparent);
+  }
+
+  .bg-surface-page-wash {
+    background-color: color-mix(in srgb, var(--color-surface-muted) 80%, var(--color-surface));
+  }
+
+  .border-divider-light {
+    border-color: var(--color-neutral-200);
+  }
+
+  .bg-progress-track {
+    background-color: var(--color-neutral-200);
+  }
+
+  .text-icon-muted {
+    color: color-mix(in srgb, var(--color-neutral-400) 55%, var(--color-text-tertiary));
+  }
+
+  .divider-gradient-y {
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--color-neutral-300) 50%, transparent),
+      transparent
+    );
+  }
+
+  .activity-tone-critical {
+    background-color: var(--color-danger-50);
+    color: var(--color-danger-600);
+    box-shadow: inset 0 0 0 2px var(--color-danger-100);
+  }
+
+  .activity-tone-warning {
+    background-color: var(--color-warning-50);
+    color: var(--color-warning-700);
+    box-shadow: inset 0 0 0 2px var(--color-warning-100);
+  }
+
+  .activity-tone-info {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-700);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--color-primary-200) 50%, transparent);
+  }
+
+  .bg-live-ping {
+    background-color: color-mix(in srgb, var(--color-text-inverse) 50%, transparent);
+  }
+
+  .bg-live-dot {
+    background-color: var(--color-text-inverse);
+  }
+
+  .dashboard-panel {
+    border: 1px solid color-mix(in srgb, var(--color-surface) 80%, transparent);
+    border-radius: 18px;
+    background-color: var(--color-surface);
+    box-shadow: 0 12px 40px rgba(0, 77, 151, 0.06);
+  }
+
+  .dashboard-panel-glass {
+    border: 1px solid color-mix(in srgb, var(--color-surface) 80%, transparent);
+    background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    box-shadow: var(--card-shadow);
+  }
+
+  .dashboard-pill-glass {
+    border: 1px solid var(--color-border);
+    background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  }
+
+  .dashboard-map-stage {
+    background-color: color-mix(in srgb, var(--color-surface-muted) 50%, transparent);
+  }
+}
+
+.elevation-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.elevation-md {
+  box-shadow: var(--shadow-md);
+}
+
+.elevation-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.tone-info {
+  background-color: var(--tone-info-bg);
+  border: 1px solid var(--tone-info-border);
+  color: var(--tone-info-text);
+}
+
+.tone-success {
+  background-color: var(--tone-success-bg);
+  border: 1px solid var(--tone-success-border);
+  color: var(--tone-success-text);
+}
+
+.tone-warning {
+  background-color: var(--tone-warning-bg);
+  border: 1px solid var(--tone-warning-border);
+  color: var(--tone-warning-text);
+}
+
+.tone-accent {
+  background-color: var(--tone-accent-bg);
+  border: 1px solid var(--tone-accent-border);
+  color: var(--tone-accent-text);
+}
+
+html {
+  color-scheme: light only;
+  direction: rtl; /* Enforce RTL globally */
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent; /* Clean touch feeling */
+  /* Full-screen coverage: prevent overflow on mobile */
+  overflow-x: hidden;
+  height: 100%;
+  background-color: var(--color-bg-secondary); /* Fixed white side issue with theme-aligned bg */
+}
+
+body {
+  background: var(--gradient-page-bg);
+  background-attachment: fixed;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fluid-body);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Enforce full-screen app wrapper */
+  min-height: 100dvh;
+  min-height: 100vh; /* fallback */
+  overflow-x: hidden;
+  /* Prevent elastic bounce scrolling from revealing background on iOS */
+  overscroll-behavior-y: none;
+}
+
+/* ============================================
+   GLOBAL RESPONSIVE TYPOGRAPHY
+   All heading and text elements use clamp() so
+   they scale fluidly between mobile and desktop
+   without any breakpoint JS or class juggling.
+
+   Formula: clamp(MIN, PREFERRED, MAX)
+   PREFERRED = base + viewport-fraction
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  /* Prevent overflow on very small screens */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+h1 {
+  /* 22px → 32px across 320px–1440px viewport */
+  font-size: clamp(1.375rem, 1.05rem + 1.1vw, 2rem);
+  font-weight: 700;
+  line-height: clamp(1.15, 1.2, 1.25);
+}
+h2 {
+  /* 18px → 26px */
+  font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+h3 {
+  /* 15px → 20px */
+  font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+h4 {
+  /* 13px → 16px — was hardcoded 14px */
+  font-size: clamp(0.8125rem, 0.76rem + 0.2vw, 1rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+h5 {
+  font-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.9375rem);
+  font-weight: 600;
+}
+h6 {
+  font-size: clamp(0.6875rem, 0.67rem + 0.08vw, 0.875rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+p {
+  line-height: 1.6;
+  /* body text scales: 16px → 18px */
+  font-size: var(--fluid-body);
+}
+
+li {
+  line-height: 1.5;
+}
+
+/* Inline spans shouldn't override font-size */
+span {
+  line-height: inherit;
+}
+
+/* Small/figcaption — caption-level text */
+small,
+figcaption,
+.text-xs {
+  font-size: var(--fluid-caption);
+}
+
+/* ============================================
+   GLOBAL RESPONSIVE FORM ELEMENTS
+   Fluid sizing prevents layout shifts and ensures
+   inputs are never clipped or too large on mobile.
+   ============================================ */
+
+/* Base input/textarea/select: fluid font + height */
+input,
+textarea,
+select {
+  font-family: var(--font-sans);
+  /* 13px → 15px: grows slightly on larger screens */
+  font-size: clamp(0.8125rem, 0.78rem + 0.15vw, 0.9375rem);
+  line-height: 1.5;
+  /* Fluid height via min-height */
+  min-height: clamp(36px, 6vw, 44px);
+}
+
+::placeholder {
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+/* Buttons — fluid height and font */
+button {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: clamp(0.75rem, 0.73rem + 0.12vw, 0.875rem);
+  min-height: clamp(34px, 5.5vw, 42px);
+}
+
+/* Lucide / inline SVGs inherit the control’s text color for contrast */
+button svg {
+  color: currentColor;
+}
+
+/* Table headers — fluid uppercase label */
+th {
+  font-weight: 600;
+  /* 10px → 12px */
+  font-size: clamp(0.625rem, 0.6rem + 0.1vw, 0.75rem);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  /* Fluid cell padding */
+  padding-block: clamp(6px, 1.2vw, 10px);
+  padding-inline: clamp(8px, 1.5vw, 14px);
+}
+
+/* Table data cells — fluid padding */
+td {
+  font-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.875rem);
+  padding-block: clamp(6px, 1.2vw, 10px);
+  padding-inline: clamp(8px, 1.5vw, 14px);
+}
+
+/* ============================================
+   GLOBAL ICON SCALING
+   SVG icons inside buttons/nav/cards scale with
+   the viewport so they never overpower text on
+   small screens or look tiny on large ones.
+   ============================================ */
+:root {
+  --icon-xs:  clamp(12px, 2.2vw, 14px);
+  --icon-sm:  clamp(14px, 2.8vw, 16px);
+  --icon-md:  clamp(16px, 3.2vw, 20px);
+  --icon-lg:  clamp(20px, 4vw,   24px);
+  --icon-xl:  clamp(24px, 5vw,   32px);
+}
+
+/* ============================================
+   GLOBAL SPACING TOKENS (viewport-fluid)
+   These supplement the theme tokens with purely
+   viewport-relative values for common layout gaps.
+   ============================================ */
+:root {
+  /* Intra-component gaps */
+  --gap-xs:   clamp(4px,  0.8vw,  6px);
+  --gap-sm:   clamp(6px,  1.2vw,  10px);
+  --gap-md:   clamp(10px, 1.8vw,  16px);
+  --gap-lg:   clamp(14px, 2.4vw,  22px);
+  --gap-xl:   clamp(20px, 3.2vw,  32px);
+
+  /* Section-level padding (page sections, widget bodies) */
+  --pad-section-x: clamp(12px, 2.5vw, 24px);
+  --pad-section-y: clamp(10px, 2vw,   20px);
+
+  /* Card internal padding */
+  --pad-card:  clamp(10px, 2vw, 18px);
+
+  /* Fluid border-radius: smaller on phones, rounder on large screens */
+  --radius-fluid-sm: clamp(6px,  1.2vw, 10px);
+  --radius-fluid-md: clamp(10px, 1.8vw, 16px);
+  --radius-fluid-lg: clamp(14px, 2.2vw, 22px);
+  --radius-fluid-xl: clamp(18px, 2.8vw, 28px);
+}
+
+/* ============================================
+   App Shell
+   Full-screen flex column wrapper.
+   Mobile: floating chrome; Desktop: fixed 68px header.
+   ============================================ */
+
+.app-shell {
+  background-color: var(--color-surface-muted);
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-shell-frame {
+  width: min(100%, var(--app-shell-max-width));
+  margin-inline: auto;
+}
+
+.app-shell-gutter {
+  padding-inline: var(--app-shell-gutter);
+}
+
+.app-shell-surface {
+  border-radius: var(--app-shell-radius);
+  background: var(--surface-card);
+  border: 1px solid var(--color-border-primary);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.app-shell-surface:hover {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--color-primary-200) 35%, var(--color-border-primary));
+}
+
+/** Minimal section divider */
+.divide-line-y > :not([hidden]) ~ :not([hidden]) {
+  border-top: 1px solid var(--color-border-primary);
+}
+
+/* ── Responsive grid system ── */
+.grid-responsive-2,
+.grid-responsive-3,
+.grid-responsive-4 {
+  display: grid;
+  gap: var(--app-shell-gap);
+}
+
+.grid-responsive-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-responsive-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-responsive-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 639px) {
+  .grid-responsive-2,
+  .grid-responsive-3,
+  .grid-responsive-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .grid-responsive-3,
+  .grid-responsive-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.text-fluid-page-title {
+  font-size: var(--fluid-page-title);
+}
+
+.text-fluid-section-title {
+  font-size: var(--fluid-section-title);
+}
+
+.text-fluid-metric {
+  font-size: var(--fluid-metric-value);
+}
+
+.text-fluid-caption {
+  font-size: var(--fluid-caption);
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Brutalist Utilities */
+.border-brutal {
+  border: var(--border-brutal);
+}
+
+.shadow-brutal {
+  box-shadow: var(--shadow-brutal);
+}
+
+.shadow-brutal-sm {
+  box-shadow: var(--shadow-brutal-sm);
+}
+
+.shadow-brutal-lg {
+  box-shadow: var(--shadow-brutal-lg);
+}
+
+.btn-brutal {
+  @apply border-brutal shadow-brutal bg-white text-[#221610] font-bold px-4 py-2 transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95;
+}
+
+.btn-brutal-primary {
+  @apply border-brutal shadow-brutal bg-[var(--color-primary-500)] text-white font-bold px-4 py-2 transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95;
+}
+
+.tab-brutal {
+  @apply border-brutal bg-white px-4 py-2 font-bold transition-all hover:bg-gray-50;
+}
+
+.tab-brutal-active {
+  @apply bg-[#221610] text-white;
+}
+
+/* 
+  Typography Overrides 
+  Ensure English/Numbers use Inter for better readability in Hebrew context
+*/
+.font-english {
+  font-family: Inter, system-ui, sans-serif;
+}
+
+input[type='tel'],
+input[type='number'],
+.price-tag {
+  font-family: Inter, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums; /* Aligned numbers */
+  direction: ltr; /* Prices and Phones are LTR */
+}
+
+/* Form Inputs */
+input,
+textarea,
+select {
+  font-family: var(--font-heebo), sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+::placeholder {
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+/* Buttons */
+button {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Tables */
+th {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* 
+  Scrollbar (Minimal) 
+*/
+/* 
+  Scrollbar (Minimal - Stitch Design) 
+*/
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* Slate-300 */
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155; /* Slate-700 */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* Slate-400 */
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* Slate-600 */
+}
+
+/* Kanban Board Specific Scrollbars */
+.kanban-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.kanban-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.kanban-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+.dark .kanban-scroll::-webkit-scrollbar-thumb {
+  background-color: #334155;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+  border-radius: 20px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #475569;
+}
+
+/* 
+  Leaflet Map Fixes for RTL 
+*/
+.leaflet-container {
+  font-family: var(--font-heebo), sans-serif !important;
+}
+.leaflet-popup-content-wrapper {
+  direction: rtl;
+  text-align: right;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+}
+.leaflet-popup-tip {
+  display: none !important; /* Cleaner look */
+}
+
+/* 
+  Utility Classes 
+*/
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modern Card Interactions */
+.interactive-card {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease;
+  will-change: transform, box-shadow;
+  border-radius: var(--radius-lg);
+  /* Ensure all cards have a clear visual boundary */
+  border: 1px solid rgba(185, 200, 255, 0.5);
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px -4px rgba(35, 97, 232, 0.12),
+    0 3px 8px -2px rgba(35, 97, 232, 0.07);
+  border-color: rgba(35, 97, 232, 0.25);
+}
+
+.interactive-card:active {
+  transform: scale(0.98) translateY(-1px);
+}
+
+/* ============================================
+   URGENCY SYSTEM
+   Visual hierarchy for operational priority.
+   Apply to any card, row, or widget that has
+   a time-sensitive state.
+   ============================================ */
+
+/* Critical — Requires immediate action (red) */
+.urgency-critical {
+  border-inline-start: 3px solid var(--urgency-critical) !important;
+  background-color: var(--urgency-critical-bg);
+}
+
+.urgency-critical-ring {
+  box-shadow: 0 0 0 2px var(--urgency-critical-ring), 0 2px 8px rgba(220, 38, 38, 0.1);
+}
+
+/* High — Same-day action (orange) */
+.urgency-high {
+  border-inline-start: 3px solid var(--urgency-high) !important;
+  background-color: var(--urgency-high-bg);
+}
+
+.urgency-high-ring {
+  box-shadow: 0 0 0 2px var(--urgency-high-ring), 0 2px 8px rgba(234, 88, 12, 0.08);
+}
+
+/* Medium — This week (amber) */
+.urgency-medium {
+  border-inline-start: 3px solid var(--urgency-medium) !important;
+  background-color: var(--urgency-medium-bg);
+}
+
+/* Normal — Routine / no urgency (blue) */
+.urgency-normal {
+  border-inline-start: 3px solid var(--urgency-normal) !important;
+}
+
+/* Done — Completed state (green) */
+.urgency-done {
+  border-inline-start: 3px solid var(--urgency-done) !important;
+  background-color: var(--urgency-done-bg);
+}
+
+/* Action Required — pulsing glow to demand attention */
+.action-required {
+  position: relative;
+  border: 1.5px solid var(--action-required-border) !important;
+  box-shadow: var(--action-required-glow);
+  animation: action-required-pulse 2.5s ease-in-out infinite;
+}
+
+.action-required::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  inset-inline-end: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--urgency-high);
+  box-shadow: 0 0 6px var(--urgency-high);
+  animation: dot-ping 1.5s ease-in-out infinite;
+}
+
+@keyframes action-required-pulse {
+  0%, 100% {
+    box-shadow: var(--action-required-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(249, 115, 22, 0.1),
+      0 6px 16px rgba(249, 115, 22, 0.18);
+  }
+}
+
+@keyframes dot-ping {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+/** Soft CTA emphasis for ops cards (solid buttons, no gradient) */
+@keyframes subtle-glow {
+  0%, 100% {
+    box-shadow:
+      0 4px 14px -4px color-mix(in srgb, var(--color-primary-600) 45%, transparent),
+      0 0 0 0 color-mix(in srgb, var(--color-primary-400) 0%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 6px 20px -4px color-mix(in srgb, var(--color-primary-600) 55%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--color-primary-400) 18%, transparent);
+  }
+}
+
+/* Urgency badge used inside cards/rows */
+.urgency-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: var(--font-caption);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.urgency-indicator.critical {
+  background: var(--urgency-critical-bg);
+  color: var(--urgency-critical);
+  border: 1px solid var(--urgency-critical-border);
+}
+
+.urgency-indicator.high {
+  background: var(--urgency-high-bg);
+  color: var(--urgency-high);
+  border: 1px solid var(--urgency-high-border);
+}
+
+.urgency-indicator.medium {
+  background: var(--urgency-medium-bg);
+  color: var(--urgency-medium);
+  border: 1px solid var(--urgency-medium-border);
+}
+
+.urgency-indicator.done {
+  background: var(--urgency-done-bg);
+  color: var(--urgency-done);
+  border: 1px solid var(--urgency-done-border);
+}
+
+/* ============================================
+   ENHANCED CARD BASE
+   Stronger visual separation between elements.
+   ============================================ */
+.ordex-panel {
+  background: #ffffff;
+  border: 1px solid rgba(185, 200, 255, 0.55);
+  border-radius: var(--radius-fluid-lg);
+  box-shadow: 0 1px 4px rgba(0, 55, 140, 0.06), 0 4px 12px rgba(0, 55, 140, 0.04);
+  overflow: hidden;
+}
+
+.ordex-panel-header {
+  padding-block: var(--gap-sm);
+  padding-inline: var(--pad-section-x);
+  border-bottom: 1px solid rgba(185, 200, 255, 0.4);
+  background: linear-gradient(to bottom, rgba(240, 244, 255, 0.6), rgba(255, 255, 255, 0));
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+.ordex-panel-body {
+  padding: var(--pad-section-y) var(--pad-section-x);
+}
+
+/* Section divider with subtle label */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  margin-block: var(--gap-md);
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(185, 200, 255, 0.3), rgba(185, 200, 255, 0.6), rgba(185, 200, 255, 0.3));
+}
+
+.section-divider span {
+  font-size: clamp(9px, 1.8vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/*
+  AI Streaming Animations
+  Typewriter cursor, shimmer loading, and smooth text appearance
+*/
+
+/* Thin blinking cursor for streaming text */
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.streaming-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--color-action);
+  margin-inline-start: 2px;
+  vertical-align: text-bottom;
+  animation: cursor-blink 0.8s step-end infinite;
+}
+
+/* Shimmer loading bar for AI processing */
+@keyframes shimmer {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.ai-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 116, 61, 0.08) 50%, transparent 100%);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Smooth scrollbar for chat areas */
+.chat-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 2px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Hide scrollbar utility (for nav) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   Compact Kanban Orders Design Styles
+   ============================================ */
+
+/* Collapsible Stack Container */
+.stack-container {
+  max-height: 140px;
+  transition: max-height 0.3s ease;
+}
+
+.stack-container:hover,
+.stack-container:focus-within {
+  max-height: 500px;
+}
+
+/* Fluid Kanban Column Width — uses viewport-aware clamp */
+.folder-column {
+  width: var(--kanban-col-w, clamp(260px, 30vw, 340px));
+  flex-shrink: 0;
+  max-width: 100vw; /* never overflow viewport */
+}
+
+/* Compact Card Item */
+.card-item {
+  @apply border-b border-slate-100 last:border-0 py-1.5 px-2 hover:bg-slate-50 transition-colors flex items-center justify-between cursor-pointer;
+}
+
+/* View Toggle Buttons */
+.view-toggle-btn {
+  @apply flex items-center gap-1.5 px-3 py-1 text-xs font-medium transition-all border border-transparent rounded-md;
+}
+
+.view-toggle-btn.active {
+  @apply bg-white border-slate-200 text-primary-600 shadow-sm;
+}
+
+.view-toggle-btn:not(.active) {
+  @apply text-slate-500 hover:text-slate-700 hover:bg-slate-100/50;
+}
+
+/* ============================================
+   Mobile-First Layout Tokens
+   Full-viewport page layouts. Heights use dvh
+   (dynamic viewport height) to account for mobile
+   browser chrome appearing/disappearing on scroll.
+   ============================================ */
+
+:root {
+  /* Top navigation bar height */
+  --top-nav-h: 68px;
+
+  /* Available content height below top nav */
+  --content-h: calc(100dvh - var(--top-nav-h));
+
+  /* Percentage-based column widths for fluid layouts */
+  --col-sidebar: clamp(220px, 22%, 300px);
+  --col-detail:  clamp(280px, 35%, 480px);
+  --col-main:    minmax(0, 1fr);
+}
+
+
+/* Safe-area utilities for iPhone notch / home indicator */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Full-viewport content area helper */
+.content-height {
+  height: var(--content-h);
+}
+
+/* ============================================
+   OrdeX Mobile UI Utilities
+   ============================================ */
+
+/* Typography Classes */
+.text-heading-lg {
+  font-size: var(--font-heading-lg);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-heading-md {
+  font-size: var(--font-heading-md);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.text-body-strong {
+  font-size: var(--font-body-strong);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-size: var(--font-caption);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.text-label {
+  font-size: var(--font-label);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   COMPONENT UTILITIES  (fluid sizing)
+   ============================================ */
+
+.ordex-card {
+  @apply bg-white shadow-sm transition-all duration-200;
+  padding: var(--pad-card);
+  border-radius: var(--radius-fluid-md);
+  border: 1px solid rgba(185, 200, 255, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 55, 140, 0.05), 0 2px 8px rgba(0, 55, 140, 0.04);
+}
+
+.ordex-card:hover {
+  border-color: rgba(35, 97, 232, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 55, 140, 0.08), 0 4px 14px rgba(0, 55, 140, 0.06);
+}
+
+.ordex-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: clamp(6px, 1.2vw, 10px);
+  padding-block: clamp(2px, 0.4vw, 4px);
+  border-radius: 9999px;
+  font-size: clamp(9px, 1.8vw, 11px);
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ordex-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: clamp(12px, 2vw, 18px);
+  padding-block: clamp(4px, 0.8vw, 7px);
+  border-radius: 9999px;
+  font-size: clamp(11px, 2vw, 13px);
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ordex-tab-pill:hover {
+  box-shadow: 0 1px 4px rgba(0, 55, 140, 0.1);
+}
+
+/* Status bar indicator (left edge stripe on a card/row) */
+.status-bar-blue    { border-inline-start: 3px solid #3b82f6; }
+.status-bar-green   { border-inline-start: 3px solid #22c55e; }
+.status-bar-amber   { border-inline-start: 3px solid #f59e0b; }
+.status-bar-orange  { border-inline-start: 3px solid #f97316; }
+.status-bar-red     { border-inline-start: 3px solid #ef4444; }
+.status-bar-purple  { border-inline-start: 3px solid #a855f7; }
+.status-bar-gray    { border-inline-start: 3px solid #94a3b8; }
+
+/* ============================================
+   Touch-Optimised Global Enhancements
+   ============================================ */
+
+/*
+  Ensure every interactive element reaches the WCAG 2.2
+  minimum 44×44 px target on coarse-pointer (touch) devices.
+  All sizes here use clamp() so they don't balloon on larger touch screens
+  (e.g. iPad) but are generous enough on phones.
+*/
+@media (pointer: coarse) {
+  /* Inputs, textareas, selects – bigger touch target */
+  input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+  textarea,
+  select {
+    min-height: 48px;
+    font-size: 16px; /* Critical: prevents iOS auto-zoom on focus */
+    padding-block: clamp(0.6rem, 1.5vw, 0.85rem);
+    padding-inline: clamp(0.65rem, 1.5vw, 1rem);
+  }
+
+  /* Checkboxes and radios – expand clickable area */
+  input[type='checkbox'],
+  input[type='radio'] {
+    width: clamp(20px, 4vw, 24px);
+    height: clamp(20px, 4vw, 24px);
+  }
+
+  /* Buttons – ensure comfortable tap zone */
+  button,
+  [role='button'],
+  a[role='button'] {
+    min-height: 44px;
+    padding-inline: clamp(12px, 2.5vw, 18px);
+  }
+
+  /* Table cells – more breathing room on touch */
+  td {
+    padding-block: clamp(0.65rem, 1.4vw, 1rem);
+    padding-inline: clamp(0.65rem, 1.4vw, 0.875rem);
+  }
+
+  th {
+    padding-block: clamp(0.55rem, 1.2vw, 0.875rem);
+    padding-inline: clamp(0.65rem, 1.4vw, 0.875rem);
+  }
+
+  /* Dropdown / list items – larger touch targets */
+  [role='menuitem'],
+  [role='option'],
+  [role='listitem'] {
+    min-height: 44px;
+    padding-block: clamp(0.6rem, 1.3vw, 0.875rem);
+  }
+}
+
+/* Active-state feedback for touch devices (replaces :hover) */
+@media (hover: none) {
+  .interactive-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: inherit;
+  }
+
+  .interactive-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(35, 97, 232, 0.12);
+  }
+
+  /* Keep action-required animation on touch - it's informational not hover */
+  .action-required {
+    animation: action-required-pulse 2.5s ease-in-out infinite;
+  }
+}
+
+/* Touch ripple effect utility */
+.touch-ripple {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
+    rgba(35, 97, 232, 0.15) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.touch-ripple:active::after {
+  opacity: 1;
+}
+
+/* Bottom-sheet pull-bar indicator */
+.pull-bar {
+  width: 40px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #d1d5db;
+  margin: 0 auto 8px;
+  flex-shrink: 0;
+}
+
+/* Swipe hint animation */
+@keyframes swipe-hint {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-8px);
+  }
+}
+
+.swipe-hint {
+  animation: swipe-hint 2s ease-in-out 1;
+}
+
+/* Responsive form grid – stacks on mobile, 2-col on tablet+ */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-md);
+}
+
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-grid {
+    gap: var(--gap-xl);
+  }
+}
+
+.form-grid-full {
+  grid-column: 1 / -1;
+}
+
+/* 3-col form grid for wide screens */
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-md);
+}
+
+@media (min-width: 640px) {
+  .form-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-lg);
+  }
+}
+
+/* Touch-scroll container (momentum scroll on iOS) */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* Prevent pull-to-refresh on overscrolled modals */
+.modal-scroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Auto-hide scrollbar on touch, show on hover (desktop) */
+@media (pointer: coarse) {
+  .auto-scrollbar {
+    scrollbar-width: none;
+  }
+  .auto-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (pointer: fine) {
+  .auto-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .auto-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .auto-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+}
+
+/* ============================================
+   GLOBAL RESPONSIVE SCALING — v3
+   Viewport-adaptive rules that apply universally.
+   No Tailwind classes needed: these classes slot
+   onto existing elements via globals.
+   ============================================ */
+
+/* --------------------------------------------------
+   1. VERY SMALL SCREENS  (< 380px — compact phones)
+   Reduce all spacing tokens and clamp floors so
+   content doesn't crowd on 320–375px wide devices.
+   -------------------------------------------------- */
+@media (max-width: 379px) {
+  :root {
+    --app-shell-gutter: 6px;
+    --app-shell-gap:    8px;
+    --gap-xs:  3px;
+    --gap-sm:  5px;
+    --gap-md:  8px;
+    --gap-lg:  12px;
+    --gap-xl:  16px;
+    --pad-card: 10px;
+    --pad-section-x: 10px;
+    --pad-section-y: 8px;
+    --radius-fluid-sm: 6px;
+    --radius-fluid-md: 8px;
+    --radius-fluid-lg: 12px;
+    --radius-fluid-xl: 14px;
+    /* Tighten font caps so nothing overflows narrow screens */
+    --font-heading-lg: 16px;
+    --font-heading-md: 13px;
+    --font-body-strong: 12px;
+    --font-body:        11px;
+    --font-caption:     10px;
+    --font-label:       9px;
+    --fluid-page-title: 1.15rem;
+  }
+
+  /* Collapse multi-col grids to single column */
+  .grid-responsive-2,
+  .grid-responsive-3,
+  .grid-responsive-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --------------------------------------------------
+   2. SMALL PHONES  (380px – 639px)
+   Standard mobile: most common real-world breakpoint.
+   -------------------------------------------------- */
+@media (min-width: 380px) and (max-width: 639px) {
+  :root {
+    --app-shell-gutter: 8px;
+    --app-shell-gap:    10px;
+    --pad-card: 12px;
+    --pad-section-x: 10px;
+  }
+}
+
+/* --------------------------------------------------
+   3. TABLET  (640px – 1023px)
+   Wider but still touch-first. Open up spacing a bit.
+   -------------------------------------------------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    --app-shell-gutter: 16px;
+    --app-shell-gap:    12px;
+    --pad-card: 14px;
+    --pad-section-x: 18px;
+    --pad-section-y: 14px;
+  }
+}
+
+/* --------------------------------------------------
+   4. DESKTOP  (≥ 1024px)
+   Generous spacing, full hover states.
+   -------------------------------------------------- */
+@media (min-width: 1024px) {
+  :root {
+    --app-shell-gutter: 22px;
+    --app-shell-gap:    16px;
+    --pad-card: 18px;
+    --pad-section-x: 22px;
+    --pad-section-y: 18px;
+  }
+}
+
+/* --------------------------------------------------
+   5. RESPONSIVE TEXT UTILITIES
+   Apply to any element that needs to participate in
+   the fluid type scale without changing JSX.
+   -------------------------------------------------- */
+
+/* Page-level title */
+.text-responsive-title {
+  font-size: clamp(1.1rem, 0.9rem + 1.1vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+}
+
+/* Widget / section heading */
+.text-responsive-heading {
+  font-size: clamp(0.875rem, 0.8rem + 0.5vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Sub-heading / card title */
+.text-responsive-subheading {
+  font-size: clamp(0.8rem, 0.76rem + 0.25vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Body text */
+.text-responsive-body {
+  font-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.875rem);
+  line-height: 1.55;
+}
+
+/* Secondary / helper text */
+.text-responsive-secondary {
+  font-size: clamp(0.7rem, 0.68rem + 0.1vw, 0.8125rem);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Caption / meta */
+.text-responsive-caption {
+  font-size: clamp(0.625rem, 0.61rem + 0.08vw, 0.75rem);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Uppercase label (e.g. column headers, section labels) */
+.text-responsive-label {
+  font-size: clamp(0.575rem, 0.56rem + 0.07vw, 0.6875rem);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* KPI / metric number */
+.text-responsive-metric {
+  font-size: clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------
+   6. RESPONSIVE COMPONENT SIZING UTILITIES
+   Classes for common component dimensions that scale
+   with the viewport rather than using fixed pixels.
+   -------------------------------------------------- */
+
+/* Icon wrappers — responsive square containers */
+.icon-container-sm {
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-container-md {
+  width: clamp(34px, 6vw, 44px);
+  height: clamp(34px, 6vw, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-container-lg {
+  width: clamp(40px, 7.5vw, 56px);
+  height: clamp(40px, 7.5vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Avatar / user photo circles */
+.avatar-sm  { width: clamp(24px, 4.5vw, 32px);  height: clamp(24px, 4.5vw, 32px);  border-radius: 50%; flex-shrink: 0; }
+.avatar-md  { width: clamp(32px, 6vw,   40px);  height: clamp(32px, 6vw,   40px);  border-radius: 50%; flex-shrink: 0; }
+.avatar-lg  { width: clamp(40px, 7.5vw, 52px);  height: clamp(40px, 7.5vw, 52px);  border-radius: 50%; flex-shrink: 0; }
+
+/* Row / list-item height — consistent across views */
+.row-height-sm  { min-height: clamp(36px, 6vw,   44px); }
+.row-height-md  { min-height: clamp(44px, 7.5vw, 56px); }
+.row-height-lg  { min-height: clamp(52px, 9vw,   68px); }
+
+/* --------------------------------------------------
+   7. RESPONSIVE SPACING UTILITIES
+   Padding and gap that adapt to screen width without
+   needing Tailwind breakpoint prefixes in JSX.
+   -------------------------------------------------- */
+
+.p-responsive    { padding: var(--pad-card); }
+.px-responsive   { padding-inline: var(--pad-section-x); }
+.py-responsive   { padding-block: var(--pad-section-y); }
+.gap-responsive  { gap: var(--app-shell-gap); }
+.gap-responsive-sm { gap: var(--gap-sm); }
+.gap-responsive-md { gap: var(--gap-md); }
+.gap-responsive-lg { gap: var(--gap-lg); }
+
+/* --------------------------------------------------
+   8. TABLE RESPONSIVE BEHAVIOUR
+   On mobile: compact table with smaller cells.
+   On desktop: comfortable table with full cell sizes.
+   -------------------------------------------------- */
+.table-responsive {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Horizontal scroll container for data tables on small screens */
+.table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  /* Show scrollability hint on small screens */
+  scrollbar-width: thin;
+}
+
+@media (max-width: 639px) {
+  /* On very small screens, hide less-critical columns via data-priority */
+  .table-responsive [data-priority='low'] {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .table-responsive [data-priority='low'] {
+    display: table-cell;
+  }
+}
+
+/* --------------------------------------------------
+   9. VIEWPORT TEXT OVERFLOW PREVENTION
+   Global safety net so no text ever pokes out of
+   its container, regardless of screen size.
+   -------------------------------------------------- */
+* {
+  min-width: 0; /* Prevent flex/grid children from overflowing */
+}
+
+img,
+video,
+svg,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure pre/code blocks don't break layouts */
+pre,
+code {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Long URLs and unbreakable strings */
+a,
+[data-long-text] {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ========================================
+   Retzef landing hero — symbol draw-on + staggered text entrance.
+   One-shot, CSS-only; static under prefers-reduced-motion.
+   ======================================== */
+@keyframes retzef-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes retzef-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.retzef-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: retzef-draw 1.2s cubic-bezier(0.33, 1, 0.68, 1) 0.15s both;
+}
+
+.retzef-rise {
+  animation: retzef-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--rise-delay, 0ms) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retzef-draw,
+  .retzef-rise {
+    animation: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { getStatusRequirements } from '@/lib/workflow-requirements';
-import type { OrderStatus } from '@/lib/order-status-type';
+import type { OrderStatus } from '@prisma/client';
 
 type GuardResult = {
   canTransition: boolean;

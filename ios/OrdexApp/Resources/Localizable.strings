@@ -1,0 +1,77 @@
+/* App */
+"app.name" = "Ordex";
+
+/* Auth */
+"login.title" = "כניסה למערכת";
+"login.email" = "אימייל";
+"login.password" = "סיסמה";
+"login.rememberMe" = "זכור אותי";
+"login.submit" = "כניסה";
+"login.error.emptyFields" = "יש להזין אימייל וסיסמה";
+"login.error.generic" = "שגיאה בהתחברות. נסה שנית.";
+
+/* Navigation */
+"nav.orders" = "הזמנות";
+"nav.dashboard" = "דשבורד";
+"nav.map" = "מפה";
+"nav.notifications" = "התראות";
+"nav.profile" = "פרופיל";
+
+/* Orders */
+"orders.queue.title" = "תור הזמנות";
+"orders.queue.search" = "חיפוש הזמנות";
+"orders.queue.empty.title" = "אין הזמנות";
+"orders.queue.empty.message" = "לא נמצאו הזמנות התואמות את הסינון";
+"orders.filter.all" = "הכל";
+"orders.detail.tabs.details" = "פרטים";
+"orders.detail.tabs.items" = "פריטים";
+"orders.detail.tabs.timeline" = "ציר זמן";
+"orders.detail.tabs.notes" = "הערות";
+"orders.detail.updateStatus" = "עדכן סטטוס";
+"orders.detail.customer" = "פרטי לקוח";
+"orders.detail.address" = "כתובת";
+"orders.detail.payment" = "תשלום";
+"orders.detail.total" = "סה\"כ";
+"orders.detail.paid" = "שולם";
+"orders.detail.outstanding" = "יתרה לתשלום";
+"orders.detail.notes.placeholder" = "כתוב הערה...";
+"orders.status.updateSheet.title" = "עדכון סטטוס";
+"orders.status.updateSheet.selectStatus" = "בחר סטטוס חדש";
+"orders.status.updateSheet.reason" = "סיבה (אופציונלי)";
+"orders.status.updateSheet.confirm" = "עדכן ל:";
+"orders.status.noTransitions" = "לא ניתן לשנות את הסטטוס מהמצב הנוכחי";
+
+/* Dashboard */
+"dashboard.title" = "דשבורד";
+"dashboard.kpi.activeOrders" = "הזמנות פעילות";
+"dashboard.kpi.revenue" = "הכנסה החודש";
+"dashboard.kpi.installations" = "התקנות חדשות";
+"dashboard.kpi.customers" = "לקוחות חדשים";
+"dashboard.recentOrders" = "הזמנות אחרונות";
+
+/* Map */
+"map.title" = "מפת משלוחים";
+"map.openOrder" = "פתח הזמנה";
+"map.empty.title" = "אין נקודות על המפה";
+"map.empty.message" = "לא נמצאו הזמנות עם מיקום";
+
+/* Notifications */
+"notifications.title" = "התראות";
+"notifications.empty.title" = "אין התראות";
+"notifications.empty.message" = "אין התראות חדשות כרגע";
+"notifications.markAllRead" = "סמן הכל כנקרא";
+
+/* Profile */
+"profile.title" = "פרופיל";
+"profile.role" = "תפקיד";
+"profile.permissions" = "הרשאות";
+"profile.logout" = "יציאה";
+"profile.logout.confirm" = "האם אתה בטוח שברצונך לצאת?";
+
+/* Common */
+"common.cancel" = "ביטול";
+"common.retry" = "נסה שוב";
+"common.loading" = "טוען...";
+"common.error.network" = "אין חיבור לאינטרנט.";
+"common.error.unauthorized" = "אין הרשאה. אנא התחבר מחדש.";
+"common.error.generic" = "שגיאה לא ידועה. נסה שנית.";

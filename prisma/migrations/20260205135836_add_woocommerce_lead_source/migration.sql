@@ -1,0 +1,2 @@
+-- Add WOOCOMMERCE to LeadSource enum
+ALTER TYPE "LeadSource" ADD VALUE IF NOT EXISTS 'WOOCOMMERCE';

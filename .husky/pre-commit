@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit quality checks
+# Note: Use 'git commit --no-verify' to bypass if needed during TS error cleanup
+
+# npm run lint && npm run type-check
+
+# Secret scan of staged changes (Railway incident, Oct 2026).
+# Install: brew install gitleaks. Set SKIP_GITLEAKS=1 only for a one-off emergency.
+if [ "$SKIP_GITLEAKS" = "1" ]; then
+  echo "⚠️  SKIP_GITLEAKS=1: secret scan skipped"
+elif command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact --no-banner --config .gitleaks.toml || {
+    echo "❌ gitleaks found a possible secret in staged changes. Remove it (values belong in .env.local / the hosting provider)."
+    exit 1
+  }
+else
+  echo "❌ gitleaks is not installed (brew install gitleaks). Commit blocked to avoid leaking secrets."
+  exit 1
+fi

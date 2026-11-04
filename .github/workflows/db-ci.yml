@@ -1,0 +1,30 @@
+name: OMS Data CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-and-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Prisma format and validate
+        run: |
+          npm run prisma:format
+          npm run prisma:validate
+          npm run db:generate
+
+      - name: Full typecheck and lint
+        run: |
+          npm run typecheck
+          npm run lint

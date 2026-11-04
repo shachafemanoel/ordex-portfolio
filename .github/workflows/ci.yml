@@ -1,23 +1,153 @@
-name: Verify portfolio demo
+name: Continuous Integration
+
+# The MVP gate. Frozen modules keep their tests in `npm test`, which is not part of this gate.
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+
+env:
+  NODE_VERSION: '22'
+  NEXT_TELEMETRY_DISABLED: '1'
+
 jobs:
-  verify:
+  quality:
+    name: Typecheck, lint, MVP tests, build
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Build and typecheck never connect; Prisma only needs a syntactically valid URL.
+      DATABASE_URL: postgresql://build:build@localhost:5432/build
+      SKIP_DB_ON_BUILD: 'true'
+      NODE_OPTIONS: --max-old-space-size=4096
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm run build
-      - run: npm test
-      - run: npm audit --audit-level=moderate
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run i18n:check
+      - run: npm run test:mvp
+      - name: Full active suite and reviewed frozen-surface manifest
+        run: npm run test:release
+      - run: npx next build
+
+  database:
+    name: Migrations and business isolation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        # Ephemeral and reachable only from this runner, so it trusts local connections and has
+        # no password to leak. The runtime role and secrets come from scripts/ci-env.sh.
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: retzef_ci_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      TENANT_ENFORCEMENT: 'true'
+      NODE_ENV: test
+      SKIP_PRISMA_INIT: 'true'
+      APP_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/ci-env.sh retzef_ci_test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Apply the full migration chain to an empty database
+        run: DATABASE_URL="$DIRECT_URL" npx prisma migrate deploy
+      - run: node scripts/provision-runtime-role.mjs
+      - name: Business isolation checks
+        run: node --import tsx scripts/verify-tenant-isolation.ts
+      - name: Invitation and session checks
+        run: node --import tsx scripts/verify-tenant-invitations.ts
+      - name: Order status flow checks
+        run: node --import tsx scripts/verify-order-status-flow.ts
+      - name: Departure payment and admin exceptions
+        run: node --import tsx scripts/verify-payment-departure.ts
+      - name: WooCommerce processing, leases and source ownership
+        run: WOO_ALLOW_PRIVATE_HOSTS=true node --import tsx scripts/verify-woo-processing.ts
+      - name: WooCommerce import, monitoring and retry isolation
+        run: WOO_ALLOW_PRIVATE_HOSTS=true node --import tsx scripts/verify-woo-import.ts
+      - name: WooCommerce receiver checks
+        run: node --import tsx scripts/verify-woo-receiver.ts
+
+  acceptance:
+    name: MVP acceptance (browser)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        # Ephemeral and reachable only from this runner, so it trusts local connections and has
+        # no password to leak. The runtime role and secrets come from scripts/ci-env.sh.
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: retzef_accept_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      TENANT_ENFORCEMENT: 'true'
+      APP_URL: http://localhost:3000
+      # The WooCommerce scenario connects to a local mock store; never set in production.
+      WOO_ALLOW_PRIVATE_HOSTS: 'true'
+      PLAYWRIGHT_BASE_URL: http://localhost:3000
+      NODE_OPTIONS: --max-old-space-size=4096
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set acceptance output path
+        run: echo "ACCEPTANCE_CONFIG=$RUNNER_TEMP/acceptance.json" >> "$GITHUB_ENV"
+      - run: bash scripts/ci-env.sh retzef_accept_test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: DATABASE_URL="$DIRECT_URL" npx prisma migrate deploy
+      - run: node scripts/provision-runtime-role.mjs
+      - run: node --import tsx scripts/acceptance-setup.ts "$ACCEPTANCE_CONFIG"
+      - run: npx next build
+      - name: Start the app
+        run: |
+          npx next start -p 3000 > "$RUNNER_TEMP/app.log" 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/login && exit 0; sleep 2; done
+          cat "$RUNNER_TEMP/app.log"; exit 1
+      - name: Start WooCommerce worker
+        run: npm run worker:woocommerce > "$RUNNER_TEMP/worker.log" 2>&1 &
       - run: npx playwright install --with-deps chromium
-      - run: npm run e2e
+      - run: npm run test:acceptance
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-report
+          path: |
+            test-results
+            playwright-report
+            ${{ runner.temp }}/app.log
+            ${{ runner.temp }}/worker.log

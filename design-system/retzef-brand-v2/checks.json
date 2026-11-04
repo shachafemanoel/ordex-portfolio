@@ -1,0 +1,398 @@
+{
+  "contrast": [
+    {
+      "foreground": "#142B36",
+      "background": "#F8FAFF",
+      "ratio": 14.0768
+    },
+    {
+      "foreground": "#142B36",
+      "background": "#FFFFFF",
+      "ratio": 14.7001
+    },
+    {
+      "foreground": "#536773",
+      "background": "#F8FAFF",
+      "ratio": 5.656
+    },
+    {
+      "foreground": "#536773",
+      "background": "#FFFFFF",
+      "ratio": 5.9064
+    },
+    {
+      "foreground": "#536773",
+      "background": "#EDF1F6",
+      "ratio": 5.2071
+    },
+    {
+      "foreground": "#FFFFFF",
+      "background": "#2361E8",
+      "ratio": 5.3211
+    },
+    {
+      "foreground": "#2361E8",
+      "background": "#FFFFFF",
+      "ratio": 5.3211
+    },
+    {
+      "foreground": "#2361E8",
+      "background": "#EDF2FF",
+      "ratio": 4.7499
+    },
+    {
+      "foreground": "#2361E8",
+      "background": "#EAF0FF",
+      "ratio": 4.6639
+    }
+  ],
+  "wordmark_contours": 3,
+  "source_reference": "/Users/shachafemanoel/Documents/Codex/2026-10-27/ordexapp-plugin-computer-use-openai-bundled/outputs/retzef-brand/retzef-brand-direction-v1.png",
+  "font": "Arial (local rendering only; no font files redistributed)",
+  "svg_count": 28,
+  "generated_files": [
+    {
+      "name": "symbol",
+      "size": [
+        1152,
+        896
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "symbol-ink",
+      "size": [
+        1152,
+        896
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "symbol-white",
+      "size": [
+        1152,
+        896
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "wordmark-a",
+      "size": [
+        1420,
+        616
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "wordmark-b",
+      "size": [
+        1420,
+        616
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "logo",
+      "size": [
+        1788,
+        498
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "logo-ink",
+      "size": [
+        1788,
+        498
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "logo-white",
+      "size": [
+        1788,
+        498
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-16",
+      "size": [
+        16,
+        16
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-mono-16",
+      "size": [
+        16,
+        16
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-16",
+      "size": [
+        16,
+        16
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-mono-16",
+      "size": [
+        16,
+        16
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-24",
+      "size": [
+        24,
+        24
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-mono-24",
+      "size": [
+        24,
+        24
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-24",
+      "size": [
+        24,
+        24
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-mono-24",
+      "size": [
+        24,
+        24
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-32",
+      "size": [
+        32,
+        32
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-mono-32",
+      "size": [
+        32,
+        32
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-32",
+      "size": [
+        32,
+        32
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-mono-32",
+      "size": [
+        32,
+        32
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-48",
+      "size": [
+        48,
+        48
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-mono-48",
+      "size": [
+        48,
+        48
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-48",
+      "size": [
+        48,
+        48
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-mono-48",
+      "size": [
+        48,
+        48
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-128",
+      "size": [
+        128,
+        128
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-light-mono-128",
+      "size": [
+        128,
+        128
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-128",
+      "size": [
+        128,
+        128
+      ],
+      "has_alpha": true
+    },
+    {
+      "name": "icon-blue-mono-128",
+      "size": [
+        128,
+        128
+      ],
+      "has_alpha": true
+    }
+  ],
+  "decorative_color_contrast": [
+    {
+      "foreground": "#FF743D",
+      "background": "#F8FAFF",
+      "ratio": 2.5724
+    },
+    {
+      "foreground": "#FF743D",
+      "background": "#FFFFFF",
+      "ratio": 2.6863
+    },
+    {
+      "foreground": "#FF743D",
+      "background": "#2361E8",
+      "ratio": 1.9808
+    }
+  ],
+  "icon_silhouette_checks": [
+    {
+      "name": "icon-light-16",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-mono-16",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-16",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-mono-16",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-24",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-mono-24",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-24",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-mono-24",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-32",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-mono-32",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-32",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-mono-32",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-48",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-mono-48",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-48",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-mono-48",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-128",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-light-mono-128",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-128",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    },
+    {
+      "name": "icon-blue-mono-128",
+      "connected_components_8_neighbors": 1,
+      "clear_of_canvas_edge": true
+    }
+  ]
+}
