@@ -1,0 +1,115 @@
+[
+  {
+    "name": "Complete the guided order and continue freely",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "landing CTA",
+      "guided progression",
+      "preparation guard",
+      "schedule guard",
+      "payment guard",
+      "synchronized bench",
+      "truthful dispatch metric",
+      "delivery completion",
+      "history",
+      "free exploration handoff"
+    ],
+    "description": "Verify real order actions drive all seven guide steps and the bench without skipping prerequisites.",
+    "steps": [
+      "Open the landing page and click להדגמה המודרכת.",
+      "Click מעבר לטיפול. Verify מעבר למוכן is disabled, check הפריטים מוכנים, and click מעבר למוכן.",
+      "Verify the gate is closed and מוכנות ליציאה is 0. Set מועד אספקה to 2026-12-01 and verify the gate remains closed.",
+      "Click סימון תשלום בדמו. Verify the gate opens, paid amount equals total, and מוכנות ליציאה becomes 1.",
+      "Click יציאה למשלוח then השלמת המסירה. Inspect the history and final guide step.",
+      "Click עכשיו נסו הזמנה משלכם, then close the creation dialog."
+    ],
+    "expected": "The guide reaches step 7 of 7 through actual actions; DEMO-1001 is completed with an audit history, and its state remains completed in free exploration."
+  },
+  {
+    "name": "Create and find an order on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "mobile queue and detail switch",
+      "creation validation",
+      "amount validation",
+      "search",
+      "status filter",
+      "empty results",
+      "dialog keyboard dismissal"
+    ],
+    "description": "Verify mobile form validation, order creation, combined filtering and Escape dismissal.",
+    "steps": [
+      "Open התנסות חופשית and click הזמנת הדגמה חדשה.",
+      "Clear שם לקוח פיקטיבי and submit; verify the dialog remains open. Enter לקוח בדיקת רצף, set amount to 0 and submit; verify creation is still blocked.",
+      "Set amount to 450 and submit. Verify the created order is selected.",
+      "Click כל ההזמנות (4), search for לקוח בדיקת רצף and verify one result. Filter to מוכן and verify empty results.",
+      "Restore הכול, clear search, return to ההזמנה הנבחרת, reopen the creation dialog and press Escape."
+    ],
+    "expected": "Invalid forms create no records; the valid order has התקבל status and 450 ₪ total. Mobile tabs, combined filters and Escape work without page overflow."
+  },
+  {
+    "name": "Hold, resume and cancel with reasons",
+    "viewport": "desktop",
+    "covers": [
+      "secondary actions",
+      "hold reason guard",
+      "resume previous status",
+      "cancel reason guard",
+      "terminal controls",
+      "bench state",
+      "history"
+    ],
+    "description": "Verify exceptional actions require a reason and stay separate from forward progression.",
+    "steps": [
+      "Open free exploration and click איפוס הדמו.",
+      "Open פעולות נוספות, choose השהיה, and verify אישור השהיה is disabled without a reason.",
+      "Enter ממתינים לאישור לקוח and confirm. Verify held status and closed gate, then click מעבר להתקבל.",
+      "Open פעולות נוספות if collapsed, choose ביטול הזמנה, and verify אישור ביטול is disabled without a reason.",
+      "Enter ביטול בדיקה and confirm. Inspect controls and history."
+    ],
+    "expected": "Holding preserves the prior station and allows resuming there; cancellation records its reason and leaves no further status actions."
+  },
+  {
+    "name": "Use the guide on mobile with reduced motion",
+    "viewport": "mobile",
+    "covers": [
+      "responsive layout",
+      "visible primary action",
+      "reduced motion",
+      "Hebrew RTL",
+      "focus visibility",
+      "keyboard access",
+      "bench station synchronization"
+    ],
+    "description": "Verify the mobile guided flow remains usable without animation.",
+    "steps": [
+      "Enable reduced motion in the test browser and open the guided demo.",
+      "Verify Hebrew RTL and absence of horizontal page overflow.",
+      "Use keyboard navigation to reach and activate מעבר לטיפול.",
+      "Check the guide changes to preparation, the bench says בטיפול, and the next disabled action explains missing preparation."
+    ],
+    "expected": "The guide and textual bench state update without requiring animation. The primary action is reachable and focus is visible; no horizontal page scrolling is needed."
+  },
+  {
+    "name": "Reset and reload discard only demo session changes",
+    "viewport": "desktop",
+    "covers": [
+      "explicit reset",
+      "refresh reset",
+      "initial dataset",
+      "browser route history",
+      "runtime health",
+      "no external provider calls"
+    ],
+    "description": "Verify reset and refresh restore fictional data and the app has no provider dependencies.",
+    "steps": [
+      "Open free exploration and mark the selected order paid.",
+      "Refresh and verify it is unpaid again.",
+      "Create an order named לקוח איפוס, then click איפוס הדמו.",
+      "Verify exactly three original orders remain, the first is selected, search is cleared and dispatch count is 0.",
+      "Use the brand link to return home, then browser Back to return to free exploration; inspect browser errors and network."
+    ],
+    "expected": "Reload and explicit reset restore initial fictional data. Route navigation works, no uncaught frontend errors occur, and no external provider requests are made."
+  }
+]

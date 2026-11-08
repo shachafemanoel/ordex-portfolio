@@ -1,0 +1,302 @@
+/**
+ * Retzef (רצף) Design System - CSS Variables
+ * Brand source: design-system/retzef-brand-v2/
+ * Single source of truth for all design tokens
+ *
+ * Based on the existing HTML mock pastel/calm palette
+ * Aligned to RTL-first, Hebrew-native design
+ */
+
+:root {
+  /* ========================================
+     RETZEF UI - Design Primitives
+     "Smart Notebook" Aesthetic: Soft, precise, professional.
+     ======================================== */
+  --app-radius-sm: 8px;
+  --app-radius-md: 12px;
+  --app-radius-lg: 16px;
+  --app-radius-xl: 20px;
+  --app-radius-2xl: 28px;
+
+  --app-border: 1px solid rgba(185, 200, 255, 0.4);
+  --app-border-strong: 1px solid rgba(35, 97, 232, 0.2);
+
+  --app-shadow-soft: 0 4px 6px -1px rgba(20, 43, 54, 0.05), 0 2px 4px -2px rgba(20, 43, 54, 0.03);
+  --app-shadow-md: 0 10px 15px -3px rgba(20, 43, 54, 0.08), 0 4px 6px -4px rgba(20, 43, 54, 0.05);
+  --app-shadow-lg: 0 20px 25px -5px rgba(20, 43, 54, 0.1), 0 8px 10px -6px rgba(20, 43, 54, 0.08);
+  --app-shadow-app-xl: 0 25px 50px -12px rgba(20, 43, 54, 0.25);
+  --app-shadow-2xl: 0 32px 72px -24px rgba(15, 23, 42, 0.28);
+
+  --shadow-sm: var(--app-shadow-soft);
+  --shadow-md: var(--app-shadow-md);
+  --shadow-lg: var(--app-shadow-lg);
+  --shadow-xl: var(--app-shadow-app-xl);
+  --shadow-2xl: var(--app-shadow-2xl);
+
+  /* ========================================
+     COLORS - Semantic Palette (The Scale of Blues)
+     ======================================== */
+
+  /* Primary Blue Scale — Retzef brand blue #2361E8 at 600 */
+  --color-primary-50: #edf2ff; /* Lightest blue for subtle backgrounds */
+  --color-primary-100: #eaf0ff;
+  --color-primary-200: #c1d3f9;
+  --color-primary-300: #9cb8f5;
+  --color-primary-400: #6590ef;
+  --color-primary-500: #3d74eb;
+  --color-primary-600: #2361e8; /* Main action color — white text 5.32:1 */
+  --color-primary-700: #1d50be; /* Hover state */
+  --color-primary-800: #1a46a6;
+  --color-primary-900: #153780; /* Deepest blue for contrast/text */
+  --primary-rgb: 35, 97, 232;
+
+  /* Brand Accent (Orange). 500 is decorative only (2.69:1 on white) — never text.
+     600 is the text-safe shade (5.12:1 on white). */
+  --color-accent-50: #fff4ef;
+  --color-accent-500: #ff743d;
+  --color-accent-600: #b2512b;
+
+  /* Status Colors */
+  --color-success-50: #f0fdf4;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+  --color-success-900: #064e3b;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-900: #78350f;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+  --color-danger-900: #7f1d1d;
+
+  /* Neutral Colors (Sophisticated Grays) */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+  /* ========================================
+     SEMANTIC MAPPING
+     ======================================== */
+
+  /* Page / surface + semantic aliases (see globals @layer utilities; avoids clashing with Tailwind `text-primary` = brand) */
+  --color-surface: var(--color-bg-primary);
+  --color-surface-muted: var(--color-bg-secondary);
+  --color-border: var(--color-border-primary);
+  --color-focus: var(--color-border-focus);
+
+  /* Background Colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8faff; /* Retzef paper - The App Base */
+  --color-bg-tertiary: #edf1f6;
+  --color-bg-inverse: var(--color-primary-900);
+  --color-bg-hover: var(--color-primary-50);
+
+  /* Text Colors */
+  --color-text-primary: #142b36; /* Retzef ink */
+  --color-text-secondary: #536773; /* Retzef muted */
+  --color-text-tertiary: #9ca3af;
+  --color-text-inverse: #ffffff;
+  --color-text-disabled: #d1d5db;
+  --color-text-link: var(--color-primary-500);
+
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-tertiary: var(--color-text-tertiary);
+  --text-inverse: var(--color-text-inverse);
+
+  /* Hairline UI dividers — keep chrome light; use divide-* / border-subtle in components */
+  --color-border-primary: rgba(83, 103, 115, 0.14);
+  --color-border-secondary: #e3e9ef;
+  --color-border-focus: rgba(35, 97, 232, 0.42);
+  --border-default: rgba(83, 103, 115, 0.18);
+
+  /* Entity tone system */
+  --tone-info-bg: var(--color-primary-50);
+  --tone-info-text: var(--color-primary-600);
+  --tone-info-border: var(--color-primary-200);
+  --tone-success-bg: #ecfdf5;
+  --tone-success-text: var(--color-success-600);
+  --tone-success-border: #a7f3d0;
+  --tone-warning-bg: #fffbeb;
+  --tone-warning-text: var(--color-warning-600);
+  --tone-warning-border: #fcd34d;
+  --tone-accent-bg: var(--color-accent-50);
+  --tone-accent-text: var(--color-accent-600);
+  --tone-accent-border: #fdba74;
+
+  /* Status Tokens */
+  --color-success: var(--color-success-600);
+  --color-warning: var(--color-warning-600);
+  --color-danger: var(--color-danger-600);
+  --color-info: var(--color-primary-600);
+  --color-whatsapp: #128c7e;
+
+  /* OrderStatus mapping for lib/orderStatus.ts */
+  --status-gray-bg: var(--color-neutral-100);
+  --status-gray-text: var(--color-neutral-700);
+  --status-blue-bg: var(--color-primary-100);
+  --status-blue-text: var(--color-primary-700);
+  --status-green-bg: var(--color-success-50);
+  --status-green-text: var(--color-success-600);
+  --status-amber-bg: var(--color-warning-50);
+  --status-amber-text: var(--color-warning-600);
+  --status-red-bg: var(--color-danger-50);
+  --status-red-text: var(--color-danger-600);
+
+  /* Button component tokens */
+  --btn-primary-bg: var(--color-primary-600);
+  --btn-primary-bg-hover: var(--color-primary-700);
+  --btn-primary-text: #ffffff;
+
+  /* Card component tokens */
+  --card-bg: #ffffff;
+  --card-border: var(--app-border);
+  --card-shadow: var(--app-shadow-soft);
+  --card-radius: var(--app-radius-md);
+
+  /* Contrast and semantic aliases used across the app */
+  --on-bright: var(--color-text-primary);
+  --on-bright-muted: var(--color-text-secondary);
+  --on-bright-subtle: var(--color-text-tertiary);
+  --on-dark: var(--color-text-inverse);
+  --on-dark-muted: rgba(255, 255, 255, 0.78);
+  --on-dark-subtle: rgba(255, 255, 255, 0.62);
+
+  --ordex-bg: var(--card-bg);
+  --ordex-bg-soft: var(--color-bg-secondary);
+  --ordex-border: var(--card-border);
+  --ordex-primary: var(--color-primary-600);
+  --ordex-primary-soft: var(--color-primary-500);
+  --ordex-accent: var(--color-accent-500);
+  --ordex-danger: var(--color-danger-600);
+  --ordex-text-main: var(--color-text-primary);
+  --ordex-text-muted: var(--color-text-secondary);
+
+  /* Canonical gradients */
+  /* Retzef brand uses flat color — token kept as a gradient type for existing consumers */
+  --gradient-brand: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-600));
+  --gradient-brand-subtle: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+  --gradient-page-bg: var(--color-bg-secondary);
+
+  /* ========================================
+     SPACING — full Tailwind-compatible scale
+     ======================================== */
+  --spacing-0: 0px;
+  --spacing-px: 1px;
+  --spacing-0-5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-1-5: 0.375rem;
+  --spacing-2: 0.5rem;
+  --spacing-2-5: 0.625rem;
+  --spacing-3: 0.75rem;
+  --spacing-3-5: 0.875rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
+  --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --radius-none: 0px;
+  --radius-sm: var(--app-radius-sm);
+  --radius-md: var(--app-radius-md);
+  --radius-lg: var(--app-radius-lg);
+  --radius-xl: var(--app-radius-xl);
+  --radius-2xl: var(--app-radius-2xl);
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS — full scale incl. xs and inner
+     ======================================== */
+  --shadow-xs: 0 1px 2px 0 rgba(20, 43, 54, 0.04);
+  --shadow-inner: inset 0 2px 4px 0 rgba(20, 43, 54, 0.06);
+
+  /* ========================================
+     FONT SIZES — Tailwind-compatible scale
+     ======================================== */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+
+  /* ========================================
+     TEXT — semantic aliases
+     ======================================== */
+  /* --color-text-muted mirrors --color-text-tertiary for convenience */
+  --color-text-muted: var(--color-text-tertiary);
+
+  /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+  --font-sans: 'Public Sans', 'Heebo', 'Inter', -apple-system, system-ui, sans-serif;
+  --font-heading: 'Public Sans', 'Heebo', sans-serif;
+  --font-display: 'Manrope', 'Heebo', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+
+  /* ========================================
+     Z-INDEX & TRANSITIONS
+     ======================================== */
+  --z-dropdown: 1000;
+  --z-fixed: 1030;
+  --z-modal: 1050;
+  --z-tooltip: 1070;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Backwards-compatible surface aliases */
+  --glass-frosted: var(--card-bg);
+  --glass-frosted-heavy: var(--card-bg);
+  --glass-frosted-soft: var(--color-bg-secondary);
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(226, 232, 240, 0.92);
+  --glass-shadow: var(--shadow-sm);
+  --glass-blur: none;
+  --glow-primary: 0 0 0 3px rgba(35, 97, 232, 0.14);
+  --glow-accent: 0 0 0 3px rgba(255, 116, 61, 0.14);
+  --glow-success: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+/* ========================================
+   RTL SUPPORT
+   ======================================== */
+[dir='rtl'] {
+  direction: rtl;
+}
+
+[dir='rtl'] img,
+[dir='rtl'] svg {
+  transform: none;
+}
+
+/* Dark mode overrides removed — Retzef is light-only (no prefers-color-scheme, no html.dark). */

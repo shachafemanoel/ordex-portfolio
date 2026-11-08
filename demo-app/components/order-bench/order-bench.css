@@ -1,0 +1,177 @@
+/* Order bench (landing page). The kit's light tokens, mapped onto the Retzef theme. No raw colors here. */
+.ob-figure.iso[data-theme='light'] {
+  --anatomy-page: var(--color-bg-secondary);
+  --anatomy-card: var(--color-bg-primary);
+  --anatomy-paper: var(--color-bg-primary);
+  --anatomy-face: var(--color-bg-primary);
+  --anatomy-top: var(--color-bg-primary);
+  --anatomy-text: var(--color-text-secondary);
+  --anatomy-strong: var(--color-text-primary);
+  --anatomy-muted: var(--color-text-secondary);
+  --anatomy-shade-0: var(--color-border-secondary);
+  --anatomy-shade-1: var(--color-bg-tertiary);
+  --anatomy-shade-2: color-mix(in srgb, var(--color-bg-tertiary) 50%, var(--color-bg-secondary));
+  --anatomy-shade-3: var(--color-bg-secondary);
+  --anatomy-hi: var(--color-text-primary);
+  --anatomy-mid: var(--color-text-tertiary);
+  --anatomy-lo: color-mix(in srgb, var(--color-text-tertiary) 62%, var(--color-bg-primary));
+  --anatomy-faint: var(--color-border-secondary);
+  --anatomy-dot: var(--color-text-secondary);
+  --anatomy-halo: var(--color-text-secondary);
+  --anatomy-halo-opacity: 0.22;
+  /* the one lit accent is brand blue */
+  --anatomy-lit: var(--color-primary-600);
+  --anatomy-lit-top: var(--color-primary-50);
+  --anatomy-lit-shade: var(--color-primary-100);
+  --ob-warn: var(--color-accent-500);
+  --ob-warn-top: var(--color-accent-50);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.ob-figure .iso-plate {
+  padding: 44px 16px 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--color-border-primary);
+}
+
+/* corners follow the reading direction */
+.ob-figure .iso-plate-corner {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ob-figure .iso-plate-corners {
+  inset: 16px 20px;
+}
+.ob-figure .iso-plate-corner[data-corner='fig'] {
+  top: 0;
+  left: auto;
+  right: auto;
+  inset-inline-start: 0;
+}
+.ob-figure .iso-plate-corner[data-corner='title'] {
+  top: 0;
+  left: auto;
+  right: auto;
+  inset-inline-end: 0;
+}
+.ob-figure .iso-plate-corner[data-corner='hint'] {
+  top: 0;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  inset-inline-start: 50%;
+  transform: translateX(50%);
+  color: var(--color-text-tertiary);
+}
+
+.ob-stage {
+  outline: none;
+  border-radius: 12px;
+}
+.ob-stage:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-border-focus);
+}
+.ob-svg > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* the warning accent: the gate bar while it blocks, and the store-review flag */
+.ob-figure .iso-solid.ob-warn > .iso-edge {
+  stroke: var(--ob-warn);
+}
+.ob-figure .iso-solid.ob-warn > .iso-top,
+.ob-figure .iso-solid.ob-warn > .iso-shade {
+  fill: var(--ob-warn-top);
+}
+
+/* the reader lamp lights while a store order is checked */
+.ob-figure .ob-lamp[data-on] .iso-edge {
+  stroke: var(--anatomy-lit);
+}
+.ob-figure .ob-lamp[data-on] .iso-top,
+.ob-figure .ob-lamp[data-on] .iso-shade {
+  fill: var(--anatomy-lit-top);
+}
+
+.ob-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.ob-controls button {
+  appearance: none;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 10px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
+}
+.ob-controls button:hover:not(:disabled) {
+  border-color: var(--color-primary-600);
+  color: var(--color-primary-600);
+}
+.ob-controls button:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+.ob-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ob-readout {
+  margin: 14px 0 0;
+  min-height: 1.5em;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ob-legend {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+.ob-mark {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1.5px solid var(--color-text-tertiary);
+  background: var(--color-bg-secondary);
+}
+.ob-mark[data-mark='lit'] {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+.ob-mark[data-mark='warn'] {
+  border-color: var(--color-accent-500);
+  background: var(--color-accent-50);
+}
+.ob-mark[data-mark='coin'] {
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  .ob-figure .iso-plate-corner[data-corner='hint'] {
+    display: none;
+  }
+  .ob-figure .iso-plate {
+    padding-inline: 8px;
+  }
+}

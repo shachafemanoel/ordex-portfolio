@@ -6,7 +6,9 @@ OrdeX is an order-management system I built for a wallpaper-installation busines
 
 ![OrdeX demo: order queue and order detail with the five-step workflow](docs/preview.png)
 
-**Try it:** [open the live demo](https://shachafemanoel.github.io/ordex-portfolio/demo/), or download [`demo/index.html`](demo/index.html) and open it in a browser. It's one self-contained file with no install, network calls or accounts.
+**Try it:** [open the guided Retzef demo](https://ordex-demo-ju11d2.v2.appdeploy.ai/) — a Hebrew walkthrough with a synchronized order-flow illustration, followed by free exploration. It uses fictional data and requires no account. Source and verification: [`demo-app/`](demo-app/).
+
+The [original GitHub Pages demo](https://shachafemanoel.github.io/ordex-portfolio/demo/) and downloadable [`demo/index.html`](demo/index.html) remain available as a self-contained offline version.
 
 ## The problem
 
